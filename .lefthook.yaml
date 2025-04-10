@@ -1,0 +1,5 @@
+pre-commit:
+  jobs:
+    - name: fmt
+      run: zig fmt src
+      stage_fixed: true

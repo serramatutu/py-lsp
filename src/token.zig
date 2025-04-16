@@ -8,7 +8,7 @@ const SnapshotTestSession = @import("snap.zig").SnapshotTestSession;
 /// Helper to consume chars from a string
 const TextCursor = struct {
     text: []const u8,
-    pos: u8,
+    pos: usize,
 
     pub const Error = error{Eof};
 
@@ -65,8 +65,8 @@ test "cursor next" {
 }
 
 pub const Token = struct {
-    start: u32,
-    len: u32,
+    start: usize,
+    len: usize,
     kind: Kind,
 
     pub const Kind = enum {
@@ -380,11 +380,19 @@ test "compare snapshots" {
     const output_writer = output.writer();
 
     while (try session.next()) |input| {
+        var line_no: u16 = 1;
+        _ = try output.load("# line 1\n");
+
         var tok = Tokenizer.init(input);
 
         while (tok.next()) |token| {
             try token.debugFmt(input, output_writer);
             _ = try output_writer.write("\n");
+
+            if (token.kind == Token.Kind.ws_newline) {
+                line_no += 1;
+                _ = try output_writer.print("\n# line {d}\n", .{line_no});
+            }
         } else |_| {}
 
         try session.submitResult(output.slice());

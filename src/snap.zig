@@ -13,8 +13,8 @@ pub const SnapshotTestSession = struct {
 
     /// String max lengths
     pub const NAME_CAP = 256;
-    pub const INPUT_CAP = 65536;
-    pub const EXPECT_CAP = 65536;
+    pub const INPUT_CAP = 1 << 16;
+    pub const EXPECT_CAP = 1 << 16;
     pub const _TMP_STR_CAP = 1024;
 
     name: FixedBufStr,
@@ -82,14 +82,12 @@ pub const SnapshotTestSession = struct {
             _ = try self._tmp_str.loadMany(&.{ SNAP_PATH, "/", py_path });
             const py_file = try cwd.openFile(self._tmp_str.slice(), .{});
             defer py_file.close();
-            _ = try self._tmp_str.loadFile(py_file);
-            _ = try self.input.loadStr(self._tmp_str);
+            _ = try self.input.loadFile(py_file);
 
             _ = try self._tmp_str.loadMany(&.{ SNAP_PATH, "/", name, ".", self.ext });
-            const snap_file = try cwd.openFile(self._tmp_str.slice(), .{});
+            const snap_file = try cwd.createFile(self._tmp_str.slice(), .{ .read = true, .truncate = false });
             defer snap_file.close();
-            _ = try self._tmp_str.loadFile(snap_file);
-            _ = try self.expect.loadStr(self._tmp_str);
+            _ = try self.expect.loadFile(snap_file);
 
             return self.input.slice();
         }
@@ -103,11 +101,7 @@ pub const SnapshotTestSession = struct {
         const cwd = std.fs.cwd();
 
         _ = try self._tmp_str.loadMany(&.{ OUT_PATH, "/", self.name.slice(), ".", self.ext });
-        const f = cwd.openFile(self._tmp_str.slice(), .{ .mode = .write_only }) catch |err|
-            switch (err) {
-                error.FileNotFound => try cwd.createFile(self._tmp_str.slice(), .{}),
-                else => return err,
-            };
+        const f = try cwd.createFile(self._tmp_str.slice(), .{ .truncate = true });
         defer f.close();
 
         _ = try f.writer().writeAll(result);

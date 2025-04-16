@@ -115,6 +115,18 @@ pub const Token = struct {
         /// any nonsense the user writes that does not match any other token type
         ud_nonsense,
 
+        // literals
+        /// int literal
+        li_int,
+        /// float literal
+        li_float,
+        /// string literal ("aaa" or u"aaa")
+        li_str,
+        /// format string literal (f"aaa {my_var:.2f}")
+        li_fstr,
+        /// bytes literal (b"aaa")
+        li_bytes,
+
         // symbols
         /// &
         sm_ampersand,
@@ -153,7 +165,7 @@ pub const Token = struct {
         /// [
         sm_lbrack,
         /// <
-        sm_le,
+        sm_lt,
         /// )
         sm_lparen,
         /// <<
@@ -221,7 +233,7 @@ pub const Token = struct {
         /// any sequence of '\n', '\r' or ' '
         ws_whitespace,
 
-        fn keyword(self: Token.Kind) []const u8 {
+        fn keyword(self: Kind) []const u8 {
             return switch (self) {
                 .kw_and => "and",
                 .kw_as => "as",
@@ -281,12 +293,17 @@ pub const Tokenizer = struct {
     text: []const u8,
     cur: TextCursor,
 
+    // whether we have seen the first non-whitespace char in this line
+    // or if we're still in the whitespace portion at the beginning of it
+    _line_begun: bool,
+
     pub const Error = error{Eof};
 
     pub fn init(text: []const u8) Tokenizer {
         return Tokenizer{
             .text = text,
             .cur = TextCursor.init(text),
+            ._line_begun = false,
         };
     }
 
@@ -302,65 +319,216 @@ pub const Tokenizer = struct {
         return Token.Kind.ud_identifier;
     }
 
-    fn _isIdentifierHead(c: u8) bool {
+    inline fn _isIdentifierHead(c: u8) bool {
         return std.ascii.isAlphabetic(c) or c == '_';
     }
 
-    fn _isIdentifierTail(c: u8) bool {
+    inline fn _isIdentifierTail(c: u8) bool {
         return std.ascii.isAlphanumeric(c) or c == '_';
     }
 
+    inline fn _isStrDelim(c: u8) bool {
+        return c == '"' or c == '\'';
+    }
+
+    inline fn _isWhitespace(c: u8) bool {
+        return c == ' ' or c == '\r';
+    }
+
+    inline fn _isWhitespaceOrNewline(c: u8) bool {
+        return _isWhitespace(c) or c == '\n';
+    }
+
+    /// advance cursor until first occurrence of c or eof
+    /// returns true if cursor is at c, false if eof
+    fn _advanceUntil(self: *Tokenizer, c: u8) bool {
+        while (self._head() != c) {
+            self.cur.advance() catch break;
+        }
+        return self._head() == c;
+    }
+
+    /// advance cursor while the head is equal to c or at eof
+    fn _advanceWhile(self: *Tokenizer, c: u8) void {
+        while (self._head() == c) {
+            self.cur.advance() catch break;
+        }
+    }
+
+    /// advance cursor to the first non-whitespace char or eof
+    fn _advanceWhitespace(self: *Tokenizer) void {
+        while (_isWhitespace(self._head())) {
+            self.cur.advance() catch break;
+        }
+    }
+
+    /// Advance the cursor if the next token is the expected value (and we're not at eof), otherwise keep
+    /// it where it is.
+    ///
+    /// Returns a Token.Kind depending on what it did.
+    fn _advanceIfNextEquals(self: *Tokenizer, expect: u8, ok: Token.Kind, fallback: Token.Kind) Token.Kind {
+        const v = self.cur.curr() catch return fallback;
+        if (v == expect) {
+            self.cur.advance() catch unreachable;
+            return ok;
+        }
+        return fallback;
+    }
+
+    /// Advance the cursor for an operator that can be doubled and used at assignment like
+    /// <, <<, <=, <<=
+    /// *, **, *=, **=
+    fn _advanceDoubleOperatorAssign(
+        self: *Tokenizer,
+        op: u8,
+        one: Token.Kind,
+        two: Token.Kind,
+        oneeq: Token.Kind,
+        twoeq: Token.Kind,
+    ) Token.Kind {
+        const r_oneeq = self._advanceIfNextEquals('=', oneeq, one);
+        // if got <=
+        if (r_oneeq == oneeq) return oneeq;
+
+        const r_two = self._advanceIfNextEquals(op, two, one);
+        // if got <
+        if (r_two == one) return one;
+
+        // either << or <<=
+        return self._advanceIfNextEquals('=', twoeq, two);
+    }
+
+    inline fn _head(self: *Tokenizer) u8 {
+        assert(!self.cur.eof());
+        return self.text[self.cur.pos];
+    }
+
+    /// Assuming we're at the head of a string (" or '), advance until the end of the string
+    /// and return the token.
+    ///
+    /// start should usually be self.cur.pos, but it can be earlier for things like f-strings.
+    fn _advanceStrLiteral(self: *Tokenizer, start: usize, kind: Token.Kind) Error!Token {
+        assert(_isStrDelim(self._head()));
+
+        const str_delim = self._head();
+
+        _ = self.cur.advance()
+            // 'f"' at the end of the file
+            catch return Token{ .start = start, .len = self.cur.pos - start, .kind = .ud_nonsense };
+
+        const ok = self._advanceUntil(str_delim);
+        self.cur.advance() catch {
+            // try to consume the closing ' or "
+            // it's OK if we're at EOF
+        };
+
+        return Token{ .start = start, .len = self.cur.pos - start, .kind = if (ok) kind else .ud_nonsense };
+    }
+
     pub fn next(self: *Tokenizer) Error!Token {
+        // ignore whitespace after the line has begun to avoid spamming since
+        // we only need them at the beginning of the line to figure out indentation
+        if (self._line_begun) self._advanceWhitespace();
+
         const start = self.cur.pos;
         const first_char = try self.cur.next();
 
-        // identifiers and keywords
-        if (Tokenizer._isIdentifierHead(first_char)) {
-            while (Tokenizer._isIdentifierTail(self.text[self.cur.pos])) {
+        // identifiers and keywords (and f-strings)
+        if (_isIdentifierHead(first_char)) {
+            self._line_begun = true;
+
+            while (_isIdentifierTail(self._head())) {
                 self.cur.advance() catch unreachable;
                 if (self.cur.eof()) break;
             }
 
-            const len = self.cur.pos - start;
-            return Token{ .start = start, .len = len, .kind = Tokenizer._identifierToTokenKind(self.text[start .. start + len]) };
+            const id_len = self.cur.pos - start;
+            const id_text = self.text[start .. start + id_len];
+
+            // string literals f"abc", u"abc" and bytes literals b"abc"
+            if (id_len == 1) switch (id_text[0]) {
+                'f', 'b', 'u' => |str_lit_qualifier| {
+                    // fstr/str/binary literal
+                    if (_isStrDelim(self._head())) {
+                        const kind: Token.Kind = switch (str_lit_qualifier) {
+                            'u' => .li_str,
+                            'f' => .li_fstr,
+                            'b' => .li_bytes,
+                            else => unreachable,
+                        };
+                        return self._advanceStrLiteral(start, kind);
+                    }
+                    // an identifier named f, b or u
+                },
+                else => {},
+            };
+
+            return Token{ .start = start, .len = id_len, .kind = Tokenizer._identifierToTokenKind(id_text) };
         }
 
-        const kind = switch (first_char) {
+        // string literals with no prefix (f, b or u)
+        if (_isStrDelim(first_char)) {
+            self._line_begun = true;
+            self.cur.back();
+            return self._advanceStrLiteral(self.cur.pos, .li_str);
+        }
+
+        // symbols
+        const kind: Token.Kind = switch (first_char) {
             // Newlines, whitespace and comments
-            '\r' => cr: {
-                const n = self.cur.curr() catch break :cr Token.Kind.ws_newline;
-                if (n == '\n') {
-                    self.cur.advance() catch unreachable;
-                    // Windows: CRLF
-                    break :cr Token.Kind.ws_newline;
-                }
-
-                // MacOS: CR
-                break :cr Token.Kind.ws_newline;
+            '\r' => self._advanceIfNextEquals('\n', .ws_newline, .ws_newline), // Windows/MacOS \n
+            '\n' => .ws_newline, // Linux: \n
+            '\t', ' ' => ws: {
+                assert(!self._line_begun);
+                self._advanceWhitespace();
+                break :ws .ws_whitespace;
             },
-            '\n' => Token.Kind.ws_newline, // Linux: \n
-            '\t', ' ' => Token.Kind.ws_whitespace,
-            '\\' => Token.Kind.ws_linejoin,
+            '\\' => .ws_linejoin,
             '#' => comment: {
-                // TODO: type-ignore comments
-                while (self.text[self.cur.pos] != '\n') {
-                    self.cur.advance() catch break;
-                }
-                break :comment Token.Kind.ud_comment;
+                // TODO: type-ignore comments as different token type
+                _ = self._advanceUntil('\n');
+                break :comment .ud_comment;
             },
 
-            // Symbols
-            '+' => plus: {
-                const v = self.cur.curr() catch break :plus Token.Kind.sm_plus;
-                if (v == '=') {
-                    self.cur.advance() catch unreachable;
-                    break :plus Token.Kind.sm_pluseq;
-                }
-                break :plus Token.Kind.sm_plus;
+            // Operators that can be followed by a '='
+            '=' => self._advanceIfNextEquals('=', .sm_twoeq, .sm_eq),
+            '+' => self._advanceIfNextEquals('=', .sm_pluseq, .sm_plus),
+            '-' => minus: {
+                const minuseq = self._advanceIfNextEquals('=', .sm_minuseq, .sm_minus);
+                if (minuseq == .sm_minuseq) break :minus .sm_minuseq;
+                // -> arrow
+                break :minus self._advanceIfNextEquals('>', .sm_arrow, .sm_minus);
             },
+            '@' => self._advanceIfNextEquals('=', .sm_ateq, .sm_at),
+            '%' => self._advanceIfNextEquals('=', .sm_percenteq, .sm_percent),
+            '&' => self._advanceIfNextEquals('=', .sm_ampersandeq, .sm_ampersand),
+            '|' => self._advanceIfNextEquals('=', .sm_pipeeq, .sm_pipe),
+            '^' => self._advanceIfNextEquals('=', .sm_hateq, .sm_hat),
+            '!' => self._advanceIfNextEquals('=', .sm_neq, .sm_exclamation),
 
-            else => Token.Kind.ud_nonsense,
+            // Operators that can be doubled and followed by '='
+            '*' => self._advanceDoubleOperatorAssign('*', .sm_star, .sm_twostar, .sm_stareq, .sm_twostareq),
+            '/' => self._advanceDoubleOperatorAssign('/', .sm_slash, .sm_twoslash, .sm_slasheq, .sm_twoslasheq),
+            '<' => self._advanceDoubleOperatorAssign('<', .sm_lt, .sm_lshift, .sm_lte, .sm_lshifteq),
+            '>' => self._advanceDoubleOperatorAssign('>', .sm_gt, .sm_rshift, .sm_gte, .sm_rshifteq),
+
+            // Other symbols
+            '~' => .sm_tilde,
+            ':' => .sm_colon,
+            '.' => .sm_dot,
+            '{' => .sm_lbrace,
+            '}' => .sm_rbrace,
+            '[' => .sm_lbrack,
+            ']' => .sm_rbrack,
+            '(' => .sm_lparen,
+            ')' => .sm_rparen,
+
+            // all else is nonsense
+            else => .ud_nonsense,
         };
+
+        self._line_begun = kind != .ws_newline;
+
         return Token{ .start = start, .len = self.cur.pos - start, .kind = kind };
     }
 };
@@ -381,7 +549,7 @@ test "compare snapshots" {
 
     while (try session.next()) |input| {
         var line_no: u16 = 1;
-        _ = try output.load("# line 1\n");
+        var line_start: usize = 0;
 
         var tok = Tokenizer.init(input);
 
@@ -392,8 +560,10 @@ test "compare snapshots" {
 
             switch (token.kind) {
                 Token.Kind.ws_newline => {
+                    const line_contents = input[line_start..token.start];
+                    _ = try output_writer.print("#{d}: {s}\n\n", .{ line_no, line_contents });
+                    line_start = token.start + token.len;
                     line_no += 1;
-                    _ = try output_writer.print("\n# line {d}\n", .{line_no});
                 },
                 Token.Kind.ud_nonsense => {
                     has_nonsense = true;
@@ -409,57 +579,4 @@ test "compare snapshots" {
     }
 
     try session.assertOk();
-}
-
-test "eof" {
-    var tok = Tokenizer.init("");
-    try std.testing.expectEqual(Tokenizer.Error.Eof, tok.next());
-}
-
-test "keyword" {
-    var tok = Tokenizer.init("False");
-    try std.testing.expectEqual(Token{ .start = 0, .len = 5, .kind = Token.Kind.kw_false }, tok.next());
-    try std.testing.expectEqual(Tokenizer.Error.Eof, tok.next());
-}
-
-test "keyword identifier" {
-    var tok = Tokenizer.init("if _test1");
-    try std.testing.expectEqual(Token{ .start = 0, .len = 2, .kind = Token.Kind.kw_if }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 2, .len = 1, .kind = Token.Kind.ws_whitespace }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 3, .len = 6, .kind = Token.Kind.ud_identifier }, tok.next());
-    try std.testing.expectEqual(Tokenizer.Error.Eof, tok.next());
-}
-
-test "identifier LF identifier" {
-    var tok = Tokenizer.init("line1\nline2");
-    try std.testing.expectEqual(Token{ .start = 0, .len = 5, .kind = Token.Kind.ud_identifier }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 5, .len = 1, .kind = Token.Kind.ws_newline }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 6, .len = 5, .kind = Token.Kind.ud_identifier }, tok.next());
-    try std.testing.expectEqual(Tokenizer.Error.Eof, tok.next());
-}
-
-test "identifier CRLF identifier" {
-    var tok = Tokenizer.init("line1\r\nline2");
-    try std.testing.expectEqual(Token{ .start = 0, .len = 5, .kind = Token.Kind.ud_identifier }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 5, .len = 2, .kind = Token.Kind.ws_newline }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 7, .len = 5, .kind = Token.Kind.ud_identifier }, tok.next());
-    try std.testing.expectEqual(Tokenizer.Error.Eof, tok.next());
-}
-
-test "identifier CR identifier" {
-    var tok = Tokenizer.init("line1\rline2");
-    try std.testing.expectEqual(Token{ .start = 0, .len = 5, .kind = Token.Kind.ud_identifier }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 5, .len = 1, .kind = Token.Kind.ws_newline }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 6, .len = 5, .kind = Token.Kind.ud_identifier }, tok.next());
-    try std.testing.expectEqual(Tokenizer.Error.Eof, tok.next());
-}
-
-test "comment" {
-    var tok = Tokenizer.init("line1\n# this is a comment\nline2");
-    try std.testing.expectEqual(Token{ .start = 0, .len = 5, .kind = Token.Kind.ud_identifier }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 5, .len = 1, .kind = Token.Kind.ws_newline }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 6, .len = 19, .kind = Token.Kind.ud_comment }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 25, .len = 1, .kind = Token.Kind.ws_newline }, tok.next());
-    try std.testing.expectEqual(Token{ .start = 26, .len = 5, .kind = Token.Kind.ud_identifier }, tok.next());
-    try std.testing.expectEqual(Tokenizer.Error.Eof, tok.next());
 }

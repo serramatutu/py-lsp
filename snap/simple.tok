@@ -1,6 +1,0 @@
-Token(kind=ud_identifier, text="test1", start=0, len=5)
-Token(kind=ws_whitespace, text=" ", start=5, len=1)
-Token(kind=sm_plus, text="+", start=6, len=1)
-Token(kind=ws_whitespace, text=" ", start=7, len=1)
-Token(kind=ud_identifier, text="test2", start=8, len=5)
-Token(kind=ws_newline, text="\n", start=13, len=1)

@@ -17,6 +17,12 @@ pub const SnapshotTestSession = struct {
     pub const EXPECT_CAP = 1 << 16;
     pub const _TMP_STR_CAP = 1024;
 
+    pub const SnapshotResult = struct {
+        err: ?anyerror,
+        name: [NAME_CAP]u8 = undefined,
+    };
+    results: std.ArrayList(SnapshotResult),
+
     name: FixedBufStr,
     input: FixedBufStr,
     expect: FixedBufStr,
@@ -43,8 +49,12 @@ pub const SnapshotTestSession = struct {
         var walker = try snap_dir.walk(a);
         errdefer walker.deinit();
 
+        var results = std.ArrayList(SnapshotResult).init(a);
+        errdefer results.deinit();
+
         return SnapshotTestSession{
             ._tmp_str = tmp_str,
+            .results = results,
             .name = name,
             .input = input,
             .expect = expect,
@@ -59,6 +69,7 @@ pub const SnapshotTestSession = struct {
         self.expect.deinit();
         self.dir_walker.deinit();
         self._tmp_str.deinit();
+        self.results.deinit();
     }
 
     pub const IterError = FixedBufStr.WriteError || FixedBufStr.LoadFileError || std.fs.File.OpenError;
@@ -96,8 +107,9 @@ pub const SnapshotTestSession = struct {
     }
 
     /// Write the result of the latest run for a snapshot to the corresponding out file then assert
-    /// it is what we expect from the pristine snapshot file.
-    pub fn submitResult(self: *SnapshotTestSession, result: []const u8) !void {
+    /// it is what we expect from the pristine snapshot file. The assert result is stored in the
+    /// results array which can be used at the end of the session.
+    pub fn submitResult(self: *SnapshotTestSession, result: []const u8, err: ?anyerror) !void {
         const cwd = std.fs.cwd();
 
         _ = try self._tmp_str.loadMany(&.{ OUT_PATH, "/", self.name.slice(), ".", self.ext });
@@ -106,6 +118,33 @@ pub const SnapshotTestSession = struct {
 
         _ = try f.writer().writeAll(result);
 
-        try std.testing.expectEqualSlices(u8, self.expect.slice(), result);
+        var snap_result = SnapshotResult{
+            .err = err,
+        };
+        @memcpy(snap_result.name[0..self.name.len], self.name.slice());
+
+        std.testing.expectEqualSlices(u8, self.expect.slice(), result) catch |assert_err| {
+            snap_result.err = assert_err;
+        };
+
+        try self.results.append(snap_result);
+    }
+
+    /// Call at the end of the testing session to ensure nothing went wrong
+    pub fn assertOk(self: *const SnapshotTestSession) !void {
+        var ok = true;
+        std.debug.print("-\n-----------------------------------\n", .{});
+        for (self.results.items) |result| {
+            if (result.err == null) {
+                std.debug.print("PASS ", .{});
+            } else {
+                ok = false;
+                std.debug.print("FAIL {s}", .{@errorName(result.err.?)});
+            }
+            std.debug.print(" : {s}\n", .{result.name});
+        }
+        std.debug.print("-----------------------------------\n", .{});
+
+        try std.testing.expect(ok);
     }
 };

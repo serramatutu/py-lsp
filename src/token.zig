@@ -385,18 +385,30 @@ test "compare snapshots" {
 
         var tok = Tokenizer.init(input);
 
+        var has_nonsense = false;
         while (tok.next()) |token| {
             try token.debugFmt(input, output_writer);
             _ = try output_writer.write("\n");
 
-            if (token.kind == Token.Kind.ws_newline) {
-                line_no += 1;
-                _ = try output_writer.print("\n# line {d}\n", .{line_no});
+            switch (token.kind) {
+                Token.Kind.ws_newline => {
+                    line_no += 1;
+                    _ = try output_writer.print("\n# line {d}\n", .{line_no});
+                },
+                Token.Kind.ud_nonsense => {
+                    has_nonsense = true;
+                },
+                else => {},
             }
         } else |_| {}
 
-        try session.submitResult(output.slice());
+        try session.submitResult(output.slice(),
+            // TODO: add header to test files which contain nonsense
+            // For now all tests are valid (i.e parseable) python files
+            if (has_nonsense) error.UnexpectedNonsense else null);
     }
+
+    try session.assertOk();
 }
 
 test "eof" {

@@ -9,744 +9,1169 @@ Token(kind=ud_identifier, text="annotations", start=33, len=11)
 Token(kind=ws_newline, text="\n", start=44, len=1)
 #2: from __future__ import annotations
 
-Token(kind=kw_import, text="import", start=45, len=6)
-Token(kind=ud_identifier, text="dataclasses", start=52, len=11)
-Token(kind=kw_as, text="as", start=64, len=2)
-Token(kind=ud_identifier, text="dc", start=67, len=2)
-Token(kind=ws_newline, text="\n", start=69, len=1)
-#3: import dataclasses as dc
+Token(kind=kw_from, text="from", start=45, len=4)
+Token(kind=ud_identifier, text="contextlib", start=50, len=10)
+Token(kind=kw_import, text="import", start=61, len=6)
+Token(kind=ud_identifier, text="contextmanager", start=68, len=14)
+Token(kind=ws_newline, text="\n", start=82, len=1)
+#3: from contextlib import contextmanager
 
-Token(kind=ws_newline, text="\n", start=70, len=1)
-#4: 
+Token(kind=kw_import, text="import", start=83, len=6)
+Token(kind=ud_identifier, text="dataclasses", start=90, len=11)
+Token(kind=kw_as, text="as", start=102, len=2)
+Token(kind=ud_identifier, text="dc", start=105, len=2)
+Token(kind=ws_newline, text="\n", start=107, len=1)
+#4: import dataclasses as dc
 
-Token(kind=ud_comment, text="# int literals", start=71, len=14)
-Token(kind=ws_newline, text="\n", start=85, len=1)
-#5: # int literals
-
-Token(kind=ud_identifier, text="i1", start=86, len=2)
-Token(kind=sm_eq, text="=", start=89, len=1)
-Token(kind=li_int, text="0", start=91, len=1)
-Token(kind=ws_newline, text="\n", start=92, len=1)
-#6: i1 = 0
-
-Token(kind=ud_identifier, text="i2", start=93, len=2)
-Token(kind=sm_eq, text="=", start=96, len=1)
-Token(kind=li_int, text="10", start=98, len=2)
-Token(kind=ws_newline, text="\n", start=100, len=1)
-#7: i2 = 10
-
-Token(kind=ud_identifier, text="b", start=101, len=1)
-Token(kind=sm_eq, text="=", start=103, len=1)
-Token(kind=li_int, text="100", start=105, len=3)
 Token(kind=ws_newline, text="\n", start=108, len=1)
-#8: b = 100
+#5: 
 
-Token(kind=ud_identifier, text="i_", start=109, len=2)
-Token(kind=sm_eq, text="=", start=112, len=1)
-Token(kind=li_int, text="1_000_000", start=114, len=9)
+Token(kind=ud_comment, text="# int literals", start=109, len=14)
 Token(kind=ws_newline, text="\n", start=123, len=1)
-#9: i_ = 1_000_000
+#6: # int literals
 
-Token(kind=ud_identifier, text="a", start=124, len=1)
-Token(kind=sm_eq, text="=", start=126, len=1)
-Token(kind=ud_identifier, text="b", start=128, len=1)
-Token(kind=ws_newline, text="\n", start=129, len=1)
-#10: a = b
-
+Token(kind=ud_identifier, text="i1", start=124, len=2)
+Token(kind=sm_eq, text="=", start=127, len=1)
+Token(kind=li_int, text="0", start=129, len=1)
 Token(kind=ws_newline, text="\n", start=130, len=1)
-#11: 
+#7: i1 = 0
 
-Token(kind=ud_comment, text="# float literals", start=131, len=16)
-Token(kind=ws_newline, text="\n", start=147, len=1)
-#12: # float literals
+Token(kind=ud_identifier, text="i2", start=131, len=2)
+Token(kind=sm_eq, text="=", start=134, len=1)
+Token(kind=li_int, text="10", start=136, len=2)
+Token(kind=ws_newline, text="\n", start=138, len=1)
+#8: i2 = 10
 
-Token(kind=ud_identifier, text="floats", start=148, len=6)
-Token(kind=sm_eq, text="=", start=155, len=1)
-Token(kind=sm_lbrack, text="[", start=157, len=1)
-Token(kind=ws_newline, text="\n", start=158, len=1)
-#13: floats = [
+Token(kind=ud_identifier, text="b", start=139, len=1)
+Token(kind=sm_eq, text="=", start=141, len=1)
+Token(kind=li_int, text="100", start=143, len=3)
+Token(kind=ws_newline, text="\n", start=146, len=1)
+#9: b = 100
 
-Token(kind=ws_whitespace, text="    ", start=159, len=4)
-Token(kind=li_float, text="0.0", start=163, len=3)
-Token(kind=sm_comma, text=",", start=166, len=1)
+Token(kind=ud_identifier, text="i_", start=147, len=2)
+Token(kind=sm_eq, text="=", start=150, len=1)
+Token(kind=li_int, text="1_000_000", start=152, len=9)
+Token(kind=ws_newline, text="\n", start=161, len=1)
+#10: i_ = 1_000_000
+
+Token(kind=ud_identifier, text="a", start=162, len=1)
+Token(kind=sm_eq, text="=", start=164, len=1)
+Token(kind=ud_identifier, text="b", start=166, len=1)
 Token(kind=ws_newline, text="\n", start=167, len=1)
-#14:     0.0,
+#11: a = b
 
-Token(kind=ws_whitespace, text="    ", start=168, len=4)
-Token(kind=li_float, text=".0", start=172, len=2)
-Token(kind=sm_comma, text=",", start=174, len=1)
-Token(kind=ws_newline, text="\n", start=175, len=1)
-#15:     .0,
+Token(kind=ws_newline, text="\n", start=168, len=1)
+#12: 
 
-Token(kind=ws_whitespace, text="    ", start=176, len=4)
-Token(kind=li_float, text="0.", start=180, len=2)
-Token(kind=sm_comma, text=",", start=182, len=1)
-Token(kind=ws_newline, text="\n", start=183, len=1)
-#16:     0.,
+Token(kind=ud_comment, text="# float literals", start=169, len=16)
+Token(kind=ws_newline, text="\n", start=185, len=1)
+#13: # float literals
 
-Token(kind=ws_whitespace, text="    ", start=184, len=4)
-Token(kind=li_float, text="1e002", start=188, len=5)
-Token(kind=sm_comma, text=",", start=193, len=1)
-Token(kind=ws_newline, text="\n", start=194, len=1)
-#17:     1e002,
+Token(kind=ud_identifier, text="floats", start=186, len=6)
+Token(kind=sm_eq, text="=", start=193, len=1)
+Token(kind=sm_lbrack, text="[", start=195, len=1)
+Token(kind=ws_newline, text="\n", start=196, len=1)
+#14: floats = [
 
-Token(kind=ws_whitespace, text="    ", start=195, len=4)
-Token(kind=li_float, text="1e-002", start=199, len=6)
-Token(kind=sm_comma, text=",", start=205, len=1)
-Token(kind=ws_newline, text="\n", start=206, len=1)
-#18:     1e-002,
+Token(kind=ws_whitespace, text="    ", start=197, len=4)
+Token(kind=li_float, text="0.0", start=201, len=3)
+Token(kind=sm_comma, text=",", start=204, len=1)
+Token(kind=ws_newline, text="\n", start=205, len=1)
+#15:     0.0,
 
-Token(kind=ws_whitespace, text="    ", start=207, len=4)
-Token(kind=li_float, text="1E002", start=211, len=5)
-Token(kind=sm_comma, text=",", start=216, len=1)
-Token(kind=ws_newline, text="\n", start=217, len=1)
-#19:     1E002,
+Token(kind=ws_whitespace, text="    ", start=206, len=4)
+Token(kind=li_float, text=".0", start=210, len=2)
+Token(kind=sm_comma, text=",", start=212, len=1)
+Token(kind=ws_newline, text="\n", start=213, len=1)
+#16:     .0,
 
-Token(kind=ws_whitespace, text="    ", start=218, len=4)
-Token(kind=li_float, text="1E-002", start=222, len=6)
-Token(kind=sm_comma, text=",", start=228, len=1)
-Token(kind=ws_newline, text="\n", start=229, len=1)
-#20:     1E-002,
+Token(kind=ws_whitespace, text="    ", start=214, len=4)
+Token(kind=li_float, text="0.", start=218, len=2)
+Token(kind=sm_comma, text=",", start=220, len=1)
+Token(kind=ws_newline, text="\n", start=221, len=1)
+#17:     0.,
 
-Token(kind=ws_whitespace, text="    ", start=230, len=4)
-Token(kind=li_float, text="1.e10", start=234, len=5)
-Token(kind=sm_comma, text=",", start=239, len=1)
-Token(kind=ws_newline, text="\n", start=240, len=1)
-#21:     1.e10,
+Token(kind=ws_whitespace, text="    ", start=222, len=4)
+Token(kind=li_float, text="1e002", start=226, len=5)
+Token(kind=sm_comma, text=",", start=231, len=1)
+Token(kind=ws_newline, text="\n", start=232, len=1)
+#18:     1e002,
 
-Token(kind=ws_whitespace, text="    ", start=241, len=4)
-Token(kind=li_float, text="1.0e10", start=245, len=6)
-Token(kind=sm_comma, text=",", start=251, len=1)
-Token(kind=ws_newline, text="\n", start=252, len=1)
-#22:     1.0e10,
+Token(kind=ws_whitespace, text="    ", start=233, len=4)
+Token(kind=li_float, text="1e-002", start=237, len=6)
+Token(kind=sm_comma, text=",", start=243, len=1)
+Token(kind=ws_newline, text="\n", start=244, len=1)
+#19:     1e-002,
 
-Token(kind=sm_rbrack, text="]", start=253, len=1)
-Token(kind=ws_newline, text="\n", start=254, len=1)
-#23: ]
-
+Token(kind=ws_whitespace, text="    ", start=245, len=4)
+Token(kind=li_float, text="1E002", start=249, len=5)
+Token(kind=sm_comma, text=",", start=254, len=1)
 Token(kind=ws_newline, text="\n", start=255, len=1)
-#24: 
+#20:     1E002,
 
-Token(kind=ud_comment, text="# other literals", start=256, len=16)
-Token(kind=ws_newline, text="\n", start=272, len=1)
-#25: # other literals
+Token(kind=ws_whitespace, text="    ", start=256, len=4)
+Token(kind=li_float, text="1E-002", start=260, len=6)
+Token(kind=sm_comma, text=",", start=266, len=1)
+Token(kind=ws_newline, text="\n", start=267, len=1)
+#21:     1E-002,
 
-Token(kind=ud_identifier, text="bool_t", start=273, len=6)
-Token(kind=sm_eq, text="=", start=280, len=1)
-Token(kind=kw_true, text="True", start=282, len=4)
-Token(kind=ws_newline, text="\n", start=286, len=1)
-#26: bool_t = True
+Token(kind=ws_whitespace, text="    ", start=268, len=4)
+Token(kind=li_float, text="1.e10", start=272, len=5)
+Token(kind=sm_comma, text=",", start=277, len=1)
+Token(kind=ws_newline, text="\n", start=278, len=1)
+#22:     1.e10,
 
-Token(kind=ud_identifier, text="bool_f", start=287, len=6)
-Token(kind=sm_eq, text="=", start=294, len=1)
-Token(kind=kw_false, text="False", start=296, len=5)
-Token(kind=ws_newline, text="\n", start=301, len=1)
-#27: bool_f = False
+Token(kind=ws_whitespace, text="    ", start=279, len=4)
+Token(kind=li_float, text="1.0e10", start=283, len=6)
+Token(kind=sm_comma, text=",", start=289, len=1)
+Token(kind=ws_newline, text="\n", start=290, len=1)
+#23:     1.0e10,
 
-Token(kind=ud_identifier, text="none", start=302, len=4)
-Token(kind=sm_eq, text="=", start=307, len=1)
-Token(kind=kw_none, text="None", start=309, len=4)
-Token(kind=ws_newline, text="\n", start=313, len=1)
-#28: none = None
+Token(kind=sm_rbrack, text="]", start=291, len=1)
+Token(kind=ws_newline, text="\n", start=292, len=1)
+#24: ]
 
-Token(kind=ud_identifier, text="imaginary", start=314, len=9)
-Token(kind=sm_eq, text="=", start=324, len=1)
-Token(kind=li_int, text="0", start=326, len=1)
-Token(kind=ud_identifier, text="j", start=327, len=1)
-Token(kind=ws_newline, text="\n", start=328, len=1)
-#29: imaginary = 0j
+Token(kind=ws_newline, text="\n", start=293, len=1)
+#25: 
 
-Token(kind=ws_newline, text="\n", start=329, len=1)
-#30: 
+Token(kind=ud_comment, text="# other literals", start=294, len=16)
+Token(kind=ws_newline, text="\n", start=310, len=1)
+#26: # other literals
 
-Token(kind=ud_comment, text="# dict literals", start=330, len=15)
-Token(kind=ws_newline, text="\n", start=345, len=1)
-#31: # dict literals
+Token(kind=ud_identifier, text="bool_t", start=311, len=6)
+Token(kind=sm_eq, text="=", start=318, len=1)
+Token(kind=kw_true, text="True", start=320, len=4)
+Token(kind=ws_newline, text="\n", start=324, len=1)
+#27: bool_t = True
 
-Token(kind=ud_identifier, text="c", start=346, len=1)
-Token(kind=sm_eq, text="=", start=348, len=1)
-Token(kind=sm_lbrace, text="{", start=350, len=1)
-Token(kind=sm_rbrace, text="}", start=351, len=1)
-Token(kind=ws_newline, text="\n", start=352, len=1)
-#32: c = {}
+Token(kind=ud_identifier, text="bool_f", start=325, len=6)
+Token(kind=sm_eq, text="=", start=332, len=1)
+Token(kind=kw_false, text="False", start=334, len=5)
+Token(kind=ws_newline, text="\n", start=339, len=1)
+#28: bool_f = False
 
-Token(kind=ud_identifier, text="c", start=353, len=1)
-Token(kind=sm_lbrack, text="[", start=354, len=1)
-Token(kind=ud_identifier, text="a", start=355, len=1)
-Token(kind=sm_rbrack, text="]", start=356, len=1)
-Token(kind=sm_eq, text="=", start=358, len=1)
-Token(kind=ud_identifier, text="b", start=360, len=1)
-Token(kind=ws_newline, text="\n", start=361, len=1)
-#33: c[a] = b
+Token(kind=ud_identifier, text="none", start=340, len=4)
+Token(kind=sm_eq, text="=", start=345, len=1)
+Token(kind=kw_none, text="None", start=347, len=4)
+Token(kind=ws_newline, text="\n", start=351, len=1)
+#29: none = None
 
-Token(kind=ws_newline, text="\n", start=362, len=1)
-#34: 
+Token(kind=ud_identifier, text="imaginary", start=352, len=9)
+Token(kind=sm_eq, text="=", start=362, len=1)
+Token(kind=li_int, text="0", start=364, len=1)
+Token(kind=ud_identifier, text="j", start=365, len=1)
+Token(kind=ws_newline, text="\n", start=366, len=1)
+#30: imaginary = 0j
 
-Token(kind=ud_comment, text="# string literals", start=363, len=17)
-Token(kind=ws_newline, text="\n", start=380, len=1)
-#35: # string literals
+Token(kind=ws_newline, text="\n", start=367, len=1)
+#31: 
 
-Token(kind=ud_identifier, text="s1", start=381, len=2)
-Token(kind=sm_eq, text="=", start=384, len=1)
-Token(kind=li_str, text=""abc"", start=386, len=5)
-Token(kind=ws_newline, text="\n", start=391, len=1)
-#36: s1 = "abc"
+Token(kind=ud_comment, text="# dict literals", start=368, len=15)
+Token(kind=ws_newline, text="\n", start=383, len=1)
+#32: # dict literals
 
-Token(kind=ud_identifier, text="s1", start=392, len=2)
-Token(kind=sm_eq, text="=", start=395, len=1)
-Token(kind=li_str, text="'abc'", start=397, len=5)
-Token(kind=ws_newline, text="\n", start=402, len=1)
-#37: s1 = 'abc'
+Token(kind=ud_identifier, text="c", start=384, len=1)
+Token(kind=sm_eq, text="=", start=386, len=1)
+Token(kind=sm_lbrace, text="{", start=388, len=1)
+Token(kind=sm_rbrace, text="}", start=389, len=1)
+Token(kind=ws_newline, text="\n", start=390, len=1)
+#33: c = {}
 
-Token(kind=ud_identifier, text="s2", start=403, len=2)
-Token(kind=sm_eq, text="=", start=406, len=1)
-Token(kind=li_str, text="u"abc"", start=408, len=6)
-Token(kind=ws_newline, text="\n", start=414, len=1)
-#38: s2 = u"abc"
+Token(kind=ud_identifier, text="c", start=391, len=1)
+Token(kind=sm_lbrack, text="[", start=392, len=1)
+Token(kind=ud_identifier, text="a", start=393, len=1)
+Token(kind=sm_rbrack, text="]", start=394, len=1)
+Token(kind=sm_eq, text="=", start=396, len=1)
+Token(kind=ud_identifier, text="b", start=398, len=1)
+Token(kind=ws_newline, text="\n", start=399, len=1)
+#34: c[a] = b
 
-Token(kind=ud_identifier, text="s2", start=415, len=2)
-Token(kind=sm_eq, text="=", start=418, len=1)
-Token(kind=li_str, text="u'abc'", start=420, len=6)
-Token(kind=ws_newline, text="\n", start=426, len=1)
-#39: s2 = u'abc'
+Token(kind=ws_newline, text="\n", start=400, len=1)
+#35: 
 
-Token(kind=ud_identifier, text="fs", start=427, len=2)
-Token(kind=sm_eq, text="=", start=430, len=1)
-Token(kind=li_fstr, text="f"abc{a}"", start=432, len=9)
-Token(kind=ws_newline, text="\n", start=441, len=1)
-#40: fs = f"abc{a}"
+Token(kind=ud_comment, text="# string literals", start=401, len=17)
+Token(kind=ws_newline, text="\n", start=418, len=1)
+#36: # string literals
 
-Token(kind=ud_identifier, text="fs", start=442, len=2)
-Token(kind=sm_eq, text="=", start=445, len=1)
-Token(kind=li_fstr, text="f'abc{a}'", start=447, len=9)
-Token(kind=ws_newline, text="\n", start=456, len=1)
-#41: fs = f'abc{a}'
+Token(kind=ud_identifier, text="s1", start=419, len=2)
+Token(kind=sm_eq, text="=", start=422, len=1)
+Token(kind=li_str, text=""abc"", start=424, len=5)
+Token(kind=ws_newline, text="\n", start=429, len=1)
+#37: s1 = "abc"
 
-Token(kind=ud_identifier, text="bs", start=457, len=2)
-Token(kind=sm_eq, text="=", start=460, len=1)
-Token(kind=li_bytes, text="b"abc"", start=462, len=6)
-Token(kind=ws_newline, text="\n", start=468, len=1)
-#42: bs = b"abc"
+Token(kind=ud_identifier, text="s1", start=430, len=2)
+Token(kind=sm_eq, text="=", start=433, len=1)
+Token(kind=li_str, text="'abc'", start=435, len=5)
+Token(kind=ws_newline, text="\n", start=440, len=1)
+#38: s1 = 'abc'
 
-Token(kind=ud_identifier, text="bs", start=469, len=2)
-Token(kind=sm_eq, text="=", start=472, len=1)
-Token(kind=li_bytes, text="b'abc'", start=474, len=6)
-Token(kind=ws_newline, text="\n", start=480, len=1)
-#43: bs = b'abc'
+Token(kind=ud_identifier, text="s2", start=441, len=2)
+Token(kind=sm_eq, text="=", start=444, len=1)
+Token(kind=li_str, text="u"abc"", start=446, len=6)
+Token(kind=ws_newline, text="\n", start=452, len=1)
+#39: s2 = u"abc"
 
-Token(kind=ud_identifier, text="b", start=481, len=1)
+Token(kind=ud_identifier, text="s2", start=453, len=2)
+Token(kind=sm_eq, text="=", start=456, len=1)
+Token(kind=li_str, text="u'abc'", start=458, len=6)
+Token(kind=ws_newline, text="\n", start=464, len=1)
+#40: s2 = u'abc'
+
+Token(kind=ud_identifier, text="fs", start=465, len=2)
+Token(kind=sm_eq, text="=", start=468, len=1)
+Token(kind=li_fstr, text="f"abc{a}"", start=470, len=9)
+Token(kind=ws_newline, text="\n", start=479, len=1)
+#41: fs = f"abc{a}"
+
+Token(kind=ud_identifier, text="fs", start=480, len=2)
 Token(kind=sm_eq, text="=", start=483, len=1)
-Token(kind=li_int, text="1", start=485, len=1)
-Token(kind=ws_newline, text="\n", start=486, len=1)
-#44: b = 1
+Token(kind=li_fstr, text="f'abc{a}'", start=485, len=9)
+Token(kind=ws_newline, text="\n", start=494, len=1)
+#42: fs = f'abc{a}'
 
-Token(kind=ud_identifier, text="f", start=487, len=1)
-Token(kind=sm_eq, text="=", start=489, len=1)
-Token(kind=li_int, text="1", start=491, len=1)
-Token(kind=ws_newline, text="\n", start=492, len=1)
-#45: f = 1
+Token(kind=ud_identifier, text="bs", start=495, len=2)
+Token(kind=sm_eq, text="=", start=498, len=1)
+Token(kind=li_bytes, text="b"abc"", start=500, len=6)
+Token(kind=ws_newline, text="\n", start=506, len=1)
+#43: bs = b"abc"
 
-Token(kind=ud_identifier, text="u", start=493, len=1)
-Token(kind=sm_eq, text="=", start=495, len=1)
-Token(kind=li_int, text="1", start=497, len=1)
-Token(kind=ws_newline, text="\n", start=498, len=1)
-#46: u = 1
+Token(kind=ud_identifier, text="bs", start=507, len=2)
+Token(kind=sm_eq, text="=", start=510, len=1)
+Token(kind=li_bytes, text="b'abc'", start=512, len=6)
+Token(kind=ws_newline, text="\n", start=518, len=1)
+#44: bs = b'abc'
 
-Token(kind=ud_identifier, text="msb", start=499, len=3)
-Token(kind=sm_eq, text="=", start=503, len=1)
-Token(kind=li_bytes, text="b"""I am a fat bytes literal."""", start=505, len=32)
-Token(kind=ws_newline, text="\n", start=537, len=1)
-#47: msb = b"""I am a fat bytes literal."""
+Token(kind=ud_identifier, text="b", start=519, len=1)
+Token(kind=sm_eq, text="=", start=521, len=1)
+Token(kind=li_int, text="1", start=523, len=1)
+Token(kind=ws_newline, text="\n", start=524, len=1)
+#45: b = 1
 
-Token(kind=ud_identifier, text="msf", start=538, len=3)
-Token(kind=sm_eq, text="=", start=542, len=1)
-Token(kind=li_fstr, text="f"""I am a fat f-string {b}."""", start=544, len=31)
+Token(kind=ud_identifier, text="f", start=525, len=1)
+Token(kind=sm_eq, text="=", start=527, len=1)
+Token(kind=li_int, text="1", start=529, len=1)
+Token(kind=ws_newline, text="\n", start=530, len=1)
+#46: f = 1
+
+Token(kind=ud_identifier, text="u", start=531, len=1)
+Token(kind=sm_eq, text="=", start=533, len=1)
+Token(kind=li_int, text="1", start=535, len=1)
+Token(kind=ws_newline, text="\n", start=536, len=1)
+#47: u = 1
+
+Token(kind=ud_identifier, text="msb", start=537, len=3)
+Token(kind=sm_eq, text="=", start=541, len=1)
+Token(kind=li_bytes, text="b"""I am a fat bytes literal."""", start=543, len=32)
 Token(kind=ws_newline, text="\n", start=575, len=1)
-#48: msf = f"""I am a fat f-string {b}."""
+#48: msb = b"""I am a fat bytes literal."""
 
-Token(kind=ud_identifier, text="ms1", start=576, len=3)
+Token(kind=ud_identifier, text="msf", start=576, len=3)
 Token(kind=sm_eq, text="=", start=580, len=1)
-Token(kind=li_str, text=""""I am a fat string with one line."""", start=582, len=38)
-Token(kind=ws_newline, text="\n", start=620, len=1)
-#49: ms1 = """I am a fat string with one line."""
+Token(kind=li_fstr, text="f"""I am a fat f-string {b}."""", start=582, len=31)
+Token(kind=ws_newline, text="\n", start=613, len=1)
+#49: msf = f"""I am a fat f-string {b}."""
 
-Token(kind=ud_identifier, text="ms2", start=621, len=3)
-Token(kind=sm_eq, text="=", start=625, len=1)
+Token(kind=ud_identifier, text="ms1", start=614, len=3)
+Token(kind=sm_eq, text="=", start=618, len=1)
+Token(kind=li_str, text=""""I am a fat string with one line."""", start=620, len=38)
+Token(kind=ws_newline, text="\n", start=658, len=1)
+#50: ms1 = """I am a fat string with one line."""
+
+Token(kind=ud_identifier, text="ms2", start=659, len=3)
+Token(kind=sm_eq, text="=", start=663, len=1)
 Token(kind=li_str, text=""""I am a fat string with multiple lines.
 
 This is an escaped sequence: \"To be or not to be.\"
-"""", start=627, len=99)
-Token(kind=ws_newline, text="\n", start=726, len=1)
-#50: ms2 = """I am a fat string with multiple lines.
+"""", start=665, len=99)
+Token(kind=ws_newline, text="\n", start=764, len=1)
+#51: ms2 = """I am a fat string with multiple lines.
 
 This is an escaped sequence: \"To be or not to be.\"
 """
 
-Token(kind=ws_newline, text="\n", start=727, len=1)
-#51: 
-
-Token(kind=ud_comment, text="# boolean", start=728, len=9)
-Token(kind=ws_newline, text="\n", start=737, len=1)
-#52: # boolean
-
-Token(kind=ud_identifier, text="print", start=738, len=5)
-Token(kind=sm_lparen, text="(", start=743, len=1)
-Token(kind=kw_not, text="not", start=744, len=3)
-Token(kind=ud_identifier, text="a", start=748, len=1)
-Token(kind=sm_rparen, text=")", start=749, len=1)
-Token(kind=ws_newline, text="\n", start=750, len=1)
-#53: print(not a)
-
-Token(kind=ud_identifier, text="print", start=751, len=5)
-Token(kind=sm_lparen, text="(", start=756, len=1)
-Token(kind=ud_identifier, text="a", start=757, len=1)
-Token(kind=kw_and, text="and", start=759, len=3)
-Token(kind=ud_identifier, text="b", start=763, len=1)
-Token(kind=sm_rparen, text=")", start=764, len=1)
 Token(kind=ws_newline, text="\n", start=765, len=1)
-#54: print(a and b)
+#52: 
 
-Token(kind=ud_identifier, text="print", start=766, len=5)
-Token(kind=sm_lparen, text="(", start=771, len=1)
-Token(kind=ud_identifier, text="a", start=772, len=1)
-Token(kind=kw_or, text="or", start=774, len=2)
-Token(kind=ud_identifier, text="b", start=777, len=1)
-Token(kind=sm_rparen, text=")", start=778, len=1)
-Token(kind=ws_newline, text="\n", start=779, len=1)
-#55: print(a or b)
+Token(kind=ud_comment, text="# boolean", start=766, len=9)
+Token(kind=ws_newline, text="\n", start=775, len=1)
+#53: # boolean
 
-Token(kind=ud_identifier, text="print", start=780, len=5)
-Token(kind=sm_lparen, text="(", start=785, len=1)
+Token(kind=ud_identifier, text="print", start=776, len=5)
+Token(kind=sm_lparen, text="(", start=781, len=1)
+Token(kind=kw_not, text="not", start=782, len=3)
 Token(kind=ud_identifier, text="a", start=786, len=1)
-Token(kind=sm_twoeq, text="==", start=788, len=2)
-Token(kind=ud_identifier, text="b", start=791, len=1)
-Token(kind=sm_rparen, text=")", start=792, len=1)
-Token(kind=ws_newline, text="\n", start=793, len=1)
-#56: print(a == b)
+Token(kind=sm_rparen, text=")", start=787, len=1)
+Token(kind=ws_newline, text="\n", start=788, len=1)
+#54: print(not a)
 
-Token(kind=ud_identifier, text="print", start=794, len=5)
-Token(kind=sm_lparen, text="(", start=799, len=1)
-Token(kind=ud_identifier, text="a", start=800, len=1)
-Token(kind=sm_neq, text="!=", start=802, len=2)
-Token(kind=ud_identifier, text="b", start=805, len=1)
-Token(kind=sm_rparen, text=")", start=806, len=1)
-Token(kind=ws_newline, text="\n", start=807, len=1)
-#57: print(a != b)
+Token(kind=ud_identifier, text="print", start=789, len=5)
+Token(kind=sm_lparen, text="(", start=794, len=1)
+Token(kind=ud_identifier, text="a", start=795, len=1)
+Token(kind=kw_and, text="and", start=797, len=3)
+Token(kind=ud_identifier, text="b", start=801, len=1)
+Token(kind=sm_rparen, text=")", start=802, len=1)
+Token(kind=ws_newline, text="\n", start=803, len=1)
+#55: print(a and b)
 
-Token(kind=ud_identifier, text="print", start=808, len=5)
-Token(kind=sm_lparen, text="(", start=813, len=1)
-Token(kind=ud_identifier, text="a", start=814, len=1)
-Token(kind=sm_lt, text="<", start=816, len=1)
-Token(kind=ud_identifier, text="b", start=818, len=1)
-Token(kind=sm_rparen, text=")", start=819, len=1)
-Token(kind=ws_newline, text="\n", start=820, len=1)
-#58: print(a < b)
+Token(kind=ud_identifier, text="print", start=804, len=5)
+Token(kind=sm_lparen, text="(", start=809, len=1)
+Token(kind=ud_identifier, text="a", start=810, len=1)
+Token(kind=kw_or, text="or", start=812, len=2)
+Token(kind=ud_identifier, text="b", start=815, len=1)
+Token(kind=sm_rparen, text=")", start=816, len=1)
+Token(kind=ws_newline, text="\n", start=817, len=1)
+#56: print(a or b)
 
-Token(kind=ud_identifier, text="print", start=821, len=5)
-Token(kind=sm_lparen, text="(", start=826, len=1)
-Token(kind=ud_identifier, text="a", start=827, len=1)
-Token(kind=sm_lte, text="<=", start=829, len=2)
-Token(kind=ud_identifier, text="b", start=832, len=1)
-Token(kind=sm_rparen, text=")", start=833, len=1)
-Token(kind=ws_newline, text="\n", start=834, len=1)
-#59: print(a <= b)
+Token(kind=ud_identifier, text="print", start=818, len=5)
+Token(kind=sm_lparen, text="(", start=823, len=1)
+Token(kind=ud_identifier, text="a", start=824, len=1)
+Token(kind=sm_twoeq, text="==", start=826, len=2)
+Token(kind=ud_identifier, text="b", start=829, len=1)
+Token(kind=sm_rparen, text=")", start=830, len=1)
+Token(kind=ws_newline, text="\n", start=831, len=1)
+#57: print(a == b)
 
-Token(kind=ud_identifier, text="print", start=835, len=5)
-Token(kind=sm_lparen, text="(", start=840, len=1)
-Token(kind=ud_identifier, text="a", start=841, len=1)
-Token(kind=sm_gt, text=">", start=843, len=1)
-Token(kind=ud_identifier, text="b", start=845, len=1)
-Token(kind=sm_rparen, text=")", start=846, len=1)
-Token(kind=ws_newline, text="\n", start=847, len=1)
-#60: print(a > b)
+Token(kind=ud_identifier, text="print", start=832, len=5)
+Token(kind=sm_lparen, text="(", start=837, len=1)
+Token(kind=ud_identifier, text="a", start=838, len=1)
+Token(kind=sm_neq, text="!=", start=840, len=2)
+Token(kind=ud_identifier, text="b", start=843, len=1)
+Token(kind=sm_rparen, text=")", start=844, len=1)
+Token(kind=ws_newline, text="\n", start=845, len=1)
+#58: print(a != b)
 
-Token(kind=ud_identifier, text="print", start=848, len=5)
-Token(kind=sm_lparen, text="(", start=853, len=1)
-Token(kind=ud_identifier, text="a", start=854, len=1)
-Token(kind=sm_gte, text=">=", start=856, len=2)
-Token(kind=ud_identifier, text="b", start=859, len=1)
-Token(kind=sm_rparen, text=")", start=860, len=1)
-Token(kind=ws_newline, text="\n", start=861, len=1)
-#61: print(a >= b)
+Token(kind=ud_identifier, text="print", start=846, len=5)
+Token(kind=sm_lparen, text="(", start=851, len=1)
+Token(kind=ud_identifier, text="a", start=852, len=1)
+Token(kind=sm_lt, text="<", start=854, len=1)
+Token(kind=ud_identifier, text="b", start=856, len=1)
+Token(kind=sm_rparen, text=")", start=857, len=1)
+Token(kind=ws_newline, text="\n", start=858, len=1)
+#59: print(a < b)
 
-Token(kind=ws_newline, text="\n", start=862, len=1)
-#62: 
+Token(kind=ud_identifier, text="print", start=859, len=5)
+Token(kind=sm_lparen, text="(", start=864, len=1)
+Token(kind=ud_identifier, text="a", start=865, len=1)
+Token(kind=sm_lte, text="<=", start=867, len=2)
+Token(kind=ud_identifier, text="b", start=870, len=1)
+Token(kind=sm_rparen, text=")", start=871, len=1)
+Token(kind=ws_newline, text="\n", start=872, len=1)
+#60: print(a <= b)
 
-Token(kind=ud_comment, text="# maths", start=863, len=7)
-Token(kind=ws_newline, text="\n", start=870, len=1)
-#63: # maths
+Token(kind=ud_identifier, text="print", start=873, len=5)
+Token(kind=sm_lparen, text="(", start=878, len=1)
+Token(kind=ud_identifier, text="a", start=879, len=1)
+Token(kind=sm_gt, text=">", start=881, len=1)
+Token(kind=ud_identifier, text="b", start=883, len=1)
+Token(kind=sm_rparen, text=")", start=884, len=1)
+Token(kind=ws_newline, text="\n", start=885, len=1)
+#61: print(a > b)
 
-Token(kind=ud_identifier, text="print", start=871, len=5)
-Token(kind=sm_lparen, text="(", start=876, len=1)
-Token(kind=sm_plus, text="+", start=877, len=1)
-Token(kind=ud_identifier, text="a", start=878, len=1)
-Token(kind=sm_rparen, text=")", start=879, len=1)
-Token(kind=ws_newline, text="\n", start=880, len=1)
-#64: print(+a)
+Token(kind=ud_identifier, text="print", start=886, len=5)
+Token(kind=sm_lparen, text="(", start=891, len=1)
+Token(kind=ud_identifier, text="a", start=892, len=1)
+Token(kind=sm_gte, text=">=", start=894, len=2)
+Token(kind=ud_identifier, text="b", start=897, len=1)
+Token(kind=sm_rparen, text=")", start=898, len=1)
+Token(kind=ws_newline, text="\n", start=899, len=1)
+#62: print(a >= b)
 
-Token(kind=ud_identifier, text="print", start=881, len=5)
-Token(kind=sm_lparen, text="(", start=886, len=1)
-Token(kind=sm_minus, text="-", start=887, len=1)
-Token(kind=ud_identifier, text="a", start=888, len=1)
-Token(kind=sm_rparen, text=")", start=889, len=1)
-Token(kind=ws_newline, text="\n", start=890, len=1)
-#65: print(-a)
+Token(kind=ws_newline, text="\n", start=900, len=1)
+#63: 
 
-Token(kind=ud_identifier, text="print", start=891, len=5)
-Token(kind=sm_lparen, text="(", start=896, len=1)
-Token(kind=ud_identifier, text="a", start=897, len=1)
-Token(kind=sm_plus, text="+", start=899, len=1)
-Token(kind=ud_identifier, text="b", start=901, len=1)
-Token(kind=sm_rparen, text=")", start=902, len=1)
-Token(kind=ws_newline, text="\n", start=903, len=1)
-#66: print(a + b)
+Token(kind=ud_comment, text="# maths", start=901, len=7)
+Token(kind=ws_newline, text="\n", start=908, len=1)
+#64: # maths
 
-Token(kind=ud_identifier, text="print", start=904, len=5)
-Token(kind=sm_lparen, text="(", start=909, len=1)
-Token(kind=ud_identifier, text="a", start=910, len=1)
-Token(kind=sm_minus, text="-", start=912, len=1)
-Token(kind=ud_identifier, text="b", start=914, len=1)
-Token(kind=sm_rparen, text=")", start=915, len=1)
-Token(kind=ws_newline, text="\n", start=916, len=1)
-#67: print(a - b)
+Token(kind=ud_identifier, text="print", start=909, len=5)
+Token(kind=sm_lparen, text="(", start=914, len=1)
+Token(kind=sm_plus, text="+", start=915, len=1)
+Token(kind=ud_identifier, text="a", start=916, len=1)
+Token(kind=sm_rparen, text=")", start=917, len=1)
+Token(kind=ws_newline, text="\n", start=918, len=1)
+#65: print(+a)
 
-Token(kind=ud_identifier, text="print", start=917, len=5)
-Token(kind=sm_lparen, text="(", start=922, len=1)
-Token(kind=ud_identifier, text="a", start=923, len=1)
-Token(kind=sm_star, text="*", start=925, len=1)
-Token(kind=ud_identifier, text="b", start=927, len=1)
-Token(kind=sm_rparen, text=")", start=928, len=1)
-Token(kind=ws_newline, text="\n", start=929, len=1)
-#68: print(a * b)
+Token(kind=ud_identifier, text="print", start=919, len=5)
+Token(kind=sm_lparen, text="(", start=924, len=1)
+Token(kind=sm_minus, text="-", start=925, len=1)
+Token(kind=ud_identifier, text="a", start=926, len=1)
+Token(kind=sm_rparen, text=")", start=927, len=1)
+Token(kind=ws_newline, text="\n", start=928, len=1)
+#66: print(-a)
 
-Token(kind=ud_identifier, text="print", start=930, len=5)
-Token(kind=sm_lparen, text="(", start=935, len=1)
-Token(kind=ud_identifier, text="a", start=936, len=1)
-Token(kind=sm_slash, text="/", start=938, len=1)
-Token(kind=ud_identifier, text="b", start=940, len=1)
-Token(kind=sm_rparen, text=")", start=941, len=1)
-Token(kind=ws_newline, text="\n", start=942, len=1)
-#69: print(a / b)
+Token(kind=ud_identifier, text="print", start=929, len=5)
+Token(kind=sm_lparen, text="(", start=934, len=1)
+Token(kind=ud_identifier, text="a", start=935, len=1)
+Token(kind=sm_plus, text="+", start=937, len=1)
+Token(kind=ud_identifier, text="b", start=939, len=1)
+Token(kind=sm_rparen, text=")", start=940, len=1)
+Token(kind=ws_newline, text="\n", start=941, len=1)
+#67: print(a + b)
 
-Token(kind=ud_identifier, text="print", start=943, len=5)
-Token(kind=sm_lparen, text="(", start=948, len=1)
-Token(kind=ud_identifier, text="a", start=949, len=1)
-Token(kind=sm_twoslash, text="//", start=951, len=2)
-Token(kind=ud_identifier, text="b", start=954, len=1)
-Token(kind=sm_rparen, text=")", start=955, len=1)
-Token(kind=ws_newline, text="\n", start=956, len=1)
-#70: print(a // b)
+Token(kind=ud_identifier, text="print", start=942, len=5)
+Token(kind=sm_lparen, text="(", start=947, len=1)
+Token(kind=ud_identifier, text="a", start=948, len=1)
+Token(kind=sm_minus, text="-", start=950, len=1)
+Token(kind=ud_identifier, text="b", start=952, len=1)
+Token(kind=sm_rparen, text=")", start=953, len=1)
+Token(kind=ws_newline, text="\n", start=954, len=1)
+#68: print(a - b)
 
-Token(kind=ud_identifier, text="print", start=957, len=5)
-Token(kind=sm_lparen, text="(", start=962, len=1)
-Token(kind=ud_identifier, text="a", start=963, len=1)
-Token(kind=sm_percent, text="%", start=965, len=1)
-Token(kind=ud_identifier, text="b", start=967, len=1)
-Token(kind=sm_rparen, text=")", start=968, len=1)
-Token(kind=ws_newline, text="\n", start=969, len=1)
-#71: print(a % b)
+Token(kind=ud_identifier, text="print", start=955, len=5)
+Token(kind=sm_lparen, text="(", start=960, len=1)
+Token(kind=ud_identifier, text="a", start=961, len=1)
+Token(kind=sm_star, text="*", start=963, len=1)
+Token(kind=ud_identifier, text="b", start=965, len=1)
+Token(kind=sm_rparen, text=")", start=966, len=1)
+Token(kind=ws_newline, text="\n", start=967, len=1)
+#69: print(a * b)
 
-Token(kind=ud_identifier, text="print", start=970, len=5)
-Token(kind=sm_lparen, text="(", start=975, len=1)
-Token(kind=ud_identifier, text="a", start=976, len=1)
-Token(kind=sm_twostar, text="**", start=978, len=2)
-Token(kind=ud_identifier, text="b", start=981, len=1)
-Token(kind=sm_rparen, text=")", start=982, len=1)
-Token(kind=ws_newline, text="\n", start=983, len=1)
-#72: print(a ** b)
+Token(kind=ud_identifier, text="print", start=968, len=5)
+Token(kind=sm_lparen, text="(", start=973, len=1)
+Token(kind=ud_identifier, text="a", start=974, len=1)
+Token(kind=sm_slash, text="/", start=976, len=1)
+Token(kind=ud_identifier, text="b", start=978, len=1)
+Token(kind=sm_rparen, text=")", start=979, len=1)
+Token(kind=ws_newline, text="\n", start=980, len=1)
+#70: print(a / b)
 
-Token(kind=ud_comment, text="# TODO: matmul", start=984, len=14)
-Token(kind=ws_newline, text="\n", start=998, len=1)
-#73: # TODO: matmul
+Token(kind=ud_identifier, text="print", start=981, len=5)
+Token(kind=sm_lparen, text="(", start=986, len=1)
+Token(kind=ud_identifier, text="a", start=987, len=1)
+Token(kind=sm_twoslash, text="//", start=989, len=2)
+Token(kind=ud_identifier, text="b", start=992, len=1)
+Token(kind=sm_rparen, text=")", start=993, len=1)
+Token(kind=ws_newline, text="\n", start=994, len=1)
+#71: print(a // b)
 
-Token(kind=ws_newline, text="\n", start=999, len=1)
-#74: 
+Token(kind=ud_identifier, text="print", start=995, len=5)
+Token(kind=sm_lparen, text="(", start=1000, len=1)
+Token(kind=ud_identifier, text="a", start=1001, len=1)
+Token(kind=sm_percent, text="%", start=1003, len=1)
+Token(kind=ud_identifier, text="b", start=1005, len=1)
+Token(kind=sm_rparen, text=")", start=1006, len=1)
+Token(kind=ws_newline, text="\n", start=1007, len=1)
+#72: print(a % b)
 
-Token(kind=ud_comment, text="# in-place maths", start=1000, len=16)
-Token(kind=ws_newline, text="\n", start=1016, len=1)
-#75: # in-place maths
+Token(kind=ud_identifier, text="print", start=1008, len=5)
+Token(kind=sm_lparen, text="(", start=1013, len=1)
+Token(kind=ud_identifier, text="a", start=1014, len=1)
+Token(kind=sm_twostar, text="**", start=1016, len=2)
+Token(kind=ud_identifier, text="b", start=1019, len=1)
+Token(kind=sm_rparen, text=")", start=1020, len=1)
+Token(kind=ws_newline, text="\n", start=1021, len=1)
+#73: print(a ** b)
 
-Token(kind=ud_identifier, text="i1", start=1017, len=2)
-Token(kind=sm_pluseq, text="+=", start=1020, len=2)
-Token(kind=ud_identifier, text="a", start=1023, len=1)
-Token(kind=ws_newline, text="\n", start=1024, len=1)
-#76: i1 += a
+Token(kind=ud_comment, text="# TODO: matmul", start=1022, len=14)
+Token(kind=ws_newline, text="\n", start=1036, len=1)
+#74: # TODO: matmul
 
-Token(kind=ud_identifier, text="i1", start=1025, len=2)
-Token(kind=sm_minuseq, text="-=", start=1028, len=2)
-Token(kind=ud_identifier, text="a", start=1031, len=1)
-Token(kind=ws_newline, text="\n", start=1032, len=1)
-#77: i1 -= a
+Token(kind=ws_newline, text="\n", start=1037, len=1)
+#75: 
 
-Token(kind=ud_identifier, text="i1", start=1033, len=2)
-Token(kind=sm_stareq, text="*=", start=1036, len=2)
-Token(kind=ud_identifier, text="a", start=1039, len=1)
-Token(kind=ws_newline, text="\n", start=1040, len=1)
-#78: i1 *= a
+Token(kind=ud_comment, text="# in-place maths", start=1038, len=16)
+Token(kind=ws_newline, text="\n", start=1054, len=1)
+#76: # in-place maths
 
-Token(kind=ud_identifier, text="i1", start=1041, len=2)
-Token(kind=sm_slasheq, text="/=", start=1044, len=2)
-Token(kind=ud_identifier, text="a", start=1047, len=1)
-Token(kind=ws_newline, text="\n", start=1048, len=1)
-#79: i1 /= a
+Token(kind=ud_identifier, text="i1", start=1055, len=2)
+Token(kind=sm_pluseq, text="+=", start=1058, len=2)
+Token(kind=ud_identifier, text="a", start=1061, len=1)
+Token(kind=ws_newline, text="\n", start=1062, len=1)
+#77: i1 += a
 
-Token(kind=ud_identifier, text="i1", start=1049, len=2)
-Token(kind=sm_twoslasheq, text="//=", start=1052, len=3)
-Token(kind=ud_identifier, text="a", start=1056, len=1)
-Token(kind=ws_newline, text="\n", start=1057, len=1)
-#80: i1 //= a
+Token(kind=ud_identifier, text="i1", start=1063, len=2)
+Token(kind=sm_minuseq, text="-=", start=1066, len=2)
+Token(kind=ud_identifier, text="a", start=1069, len=1)
+Token(kind=ws_newline, text="\n", start=1070, len=1)
+#78: i1 -= a
 
-Token(kind=ud_identifier, text="i1", start=1058, len=2)
-Token(kind=sm_percenteq, text="%=", start=1061, len=2)
-Token(kind=ud_identifier, text="a", start=1064, len=1)
-Token(kind=ws_newline, text="\n", start=1065, len=1)
-#81: i1 %= a
+Token(kind=ud_identifier, text="i1", start=1071, len=2)
+Token(kind=sm_stareq, text="*=", start=1074, len=2)
+Token(kind=ud_identifier, text="a", start=1077, len=1)
+Token(kind=ws_newline, text="\n", start=1078, len=1)
+#79: i1 *= a
 
-Token(kind=ud_identifier, text="i1", start=1066, len=2)
-Token(kind=sm_twostareq, text="**=", start=1069, len=3)
-Token(kind=ud_identifier, text="a", start=1073, len=1)
-Token(kind=ws_newline, text="\n", start=1074, len=1)
-#82: i1 **= a
+Token(kind=ud_identifier, text="i1", start=1079, len=2)
+Token(kind=sm_slasheq, text="/=", start=1082, len=2)
+Token(kind=ud_identifier, text="a", start=1085, len=1)
+Token(kind=ws_newline, text="\n", start=1086, len=1)
+#80: i1 /= a
 
-Token(kind=ud_comment, text="# TODO: matmul", start=1075, len=14)
-Token(kind=ws_newline, text="\n", start=1089, len=1)
-#83: # TODO: matmul
+Token(kind=ud_identifier, text="i1", start=1087, len=2)
+Token(kind=sm_twoslasheq, text="//=", start=1090, len=3)
+Token(kind=ud_identifier, text="a", start=1094, len=1)
+Token(kind=ws_newline, text="\n", start=1095, len=1)
+#81: i1 //= a
 
-Token(kind=ws_newline, text="\n", start=1090, len=1)
-#84: 
+Token(kind=ud_identifier, text="i1", start=1096, len=2)
+Token(kind=sm_percenteq, text="%=", start=1099, len=2)
+Token(kind=ud_identifier, text="a", start=1102, len=1)
+Token(kind=ws_newline, text="\n", start=1103, len=1)
+#82: i1 %= a
 
-Token(kind=ud_comment, text="# bitwise", start=1091, len=9)
-Token(kind=ws_newline, text="\n", start=1100, len=1)
-#85: # bitwise
+Token(kind=ud_identifier, text="i1", start=1104, len=2)
+Token(kind=sm_twostareq, text="**=", start=1107, len=3)
+Token(kind=ud_identifier, text="a", start=1111, len=1)
+Token(kind=ws_newline, text="\n", start=1112, len=1)
+#83: i1 **= a
 
-Token(kind=ud_identifier, text="print", start=1101, len=5)
-Token(kind=sm_lparen, text="(", start=1106, len=1)
-Token(kind=sm_tilde, text="~", start=1107, len=1)
-Token(kind=ud_identifier, text="a", start=1108, len=1)
-Token(kind=sm_rparen, text=")", start=1109, len=1)
-Token(kind=ws_newline, text="\n", start=1110, len=1)
-#86: print(~a)
+Token(kind=ud_comment, text="# TODO: matmul", start=1113, len=14)
+Token(kind=ws_newline, text="\n", start=1127, len=1)
+#84: # TODO: matmul
 
-Token(kind=ud_identifier, text="print", start=1111, len=5)
-Token(kind=sm_lparen, text="(", start=1116, len=1)
-Token(kind=ud_identifier, text="a", start=1117, len=1)
-Token(kind=sm_ampersand, text="&", start=1119, len=1)
-Token(kind=ud_identifier, text="b", start=1121, len=1)
-Token(kind=sm_rparen, text=")", start=1122, len=1)
-Token(kind=ws_newline, text="\n", start=1123, len=1)
-#87: print(a & b)
+Token(kind=ws_newline, text="\n", start=1128, len=1)
+#85: 
 
-Token(kind=ud_identifier, text="print", start=1124, len=5)
-Token(kind=sm_lparen, text="(", start=1129, len=1)
-Token(kind=ud_identifier, text="a", start=1130, len=1)
-Token(kind=sm_pipe, text="|", start=1132, len=1)
-Token(kind=ud_identifier, text="b", start=1134, len=1)
-Token(kind=sm_rparen, text=")", start=1135, len=1)
-Token(kind=ws_newline, text="\n", start=1136, len=1)
-#88: print(a | b)
+Token(kind=ud_comment, text="# bitwise", start=1129, len=9)
+Token(kind=ws_newline, text="\n", start=1138, len=1)
+#86: # bitwise
 
-Token(kind=ud_identifier, text="print", start=1137, len=5)
-Token(kind=sm_lparen, text="(", start=1142, len=1)
-Token(kind=ud_identifier, text="a", start=1143, len=1)
-Token(kind=sm_hat, text="^", start=1145, len=1)
-Token(kind=ud_identifier, text="b", start=1147, len=1)
-Token(kind=sm_rparen, text=")", start=1148, len=1)
-Token(kind=ws_newline, text="\n", start=1149, len=1)
-#89: print(a ^ b)
+Token(kind=ud_identifier, text="print", start=1139, len=5)
+Token(kind=sm_lparen, text="(", start=1144, len=1)
+Token(kind=sm_tilde, text="~", start=1145, len=1)
+Token(kind=ud_identifier, text="a", start=1146, len=1)
+Token(kind=sm_rparen, text=")", start=1147, len=1)
+Token(kind=ws_newline, text="\n", start=1148, len=1)
+#87: print(~a)
 
-Token(kind=ud_identifier, text="print", start=1150, len=5)
-Token(kind=sm_lparen, text="(", start=1155, len=1)
-Token(kind=ud_identifier, text="a", start=1156, len=1)
-Token(kind=sm_lshift, text="<<", start=1158, len=2)
-Token(kind=ud_identifier, text="b", start=1161, len=1)
-Token(kind=sm_rparen, text=")", start=1162, len=1)
-Token(kind=ws_newline, text="\n", start=1163, len=1)
-#90: print(a << b)
+Token(kind=ud_identifier, text="print", start=1149, len=5)
+Token(kind=sm_lparen, text="(", start=1154, len=1)
+Token(kind=ud_identifier, text="a", start=1155, len=1)
+Token(kind=sm_ampersand, text="&", start=1157, len=1)
+Token(kind=ud_identifier, text="b", start=1159, len=1)
+Token(kind=sm_rparen, text=")", start=1160, len=1)
+Token(kind=ws_newline, text="\n", start=1161, len=1)
+#88: print(a & b)
 
-Token(kind=ud_identifier, text="print", start=1164, len=5)
-Token(kind=sm_lparen, text="(", start=1169, len=1)
-Token(kind=ud_identifier, text="a", start=1170, len=1)
-Token(kind=sm_rshift, text=">>", start=1172, len=2)
-Token(kind=ud_identifier, text="b", start=1175, len=1)
-Token(kind=sm_rparen, text=")", start=1176, len=1)
-Token(kind=ws_newline, text="\n", start=1177, len=1)
-#91: print(a >> b)
+Token(kind=ud_identifier, text="print", start=1162, len=5)
+Token(kind=sm_lparen, text="(", start=1167, len=1)
+Token(kind=ud_identifier, text="a", start=1168, len=1)
+Token(kind=sm_pipe, text="|", start=1170, len=1)
+Token(kind=ud_identifier, text="b", start=1172, len=1)
+Token(kind=sm_rparen, text=")", start=1173, len=1)
+Token(kind=ws_newline, text="\n", start=1174, len=1)
+#89: print(a | b)
 
-Token(kind=ws_newline, text="\n", start=1178, len=1)
-#92: 
+Token(kind=ud_identifier, text="print", start=1175, len=5)
+Token(kind=sm_lparen, text="(", start=1180, len=1)
+Token(kind=ud_identifier, text="a", start=1181, len=1)
+Token(kind=sm_hat, text="^", start=1183, len=1)
+Token(kind=ud_identifier, text="b", start=1185, len=1)
+Token(kind=sm_rparen, text=")", start=1186, len=1)
+Token(kind=ws_newline, text="\n", start=1187, len=1)
+#90: print(a ^ b)
 
-Token(kind=ud_comment, text="# in-place bitwise", start=1179, len=18)
-Token(kind=ws_newline, text="\n", start=1197, len=1)
-#93: # in-place bitwise
+Token(kind=ud_identifier, text="print", start=1188, len=5)
+Token(kind=sm_lparen, text="(", start=1193, len=1)
+Token(kind=ud_identifier, text="a", start=1194, len=1)
+Token(kind=sm_lshift, text="<<", start=1196, len=2)
+Token(kind=ud_identifier, text="b", start=1199, len=1)
+Token(kind=sm_rparen, text=")", start=1200, len=1)
+Token(kind=ws_newline, text="\n", start=1201, len=1)
+#91: print(a << b)
 
-Token(kind=ud_identifier, text="i2", start=1198, len=2)
-Token(kind=sm_ampersandeq, text="&=", start=1201, len=2)
-Token(kind=ud_identifier, text="a", start=1204, len=1)
-Token(kind=ws_newline, text="\n", start=1205, len=1)
-#94: i2 &= a
+Token(kind=ud_identifier, text="print", start=1202, len=5)
+Token(kind=sm_lparen, text="(", start=1207, len=1)
+Token(kind=ud_identifier, text="a", start=1208, len=1)
+Token(kind=sm_rshift, text=">>", start=1210, len=2)
+Token(kind=ud_identifier, text="b", start=1213, len=1)
+Token(kind=sm_rparen, text=")", start=1214, len=1)
+Token(kind=ws_newline, text="\n", start=1215, len=1)
+#92: print(a >> b)
 
-Token(kind=ud_identifier, text="i2", start=1206, len=2)
-Token(kind=sm_pipeeq, text="|=", start=1209, len=2)
-Token(kind=ud_identifier, text="a", start=1212, len=1)
-Token(kind=ws_newline, text="\n", start=1213, len=1)
-#95: i2 |= a
+Token(kind=ws_newline, text="\n", start=1216, len=1)
+#93: 
 
-Token(kind=ud_identifier, text="i2", start=1214, len=2)
-Token(kind=sm_hateq, text="^=", start=1217, len=2)
-Token(kind=ud_identifier, text="a", start=1220, len=1)
-Token(kind=ws_newline, text="\n", start=1221, len=1)
-#96: i2 ^= a
+Token(kind=ud_comment, text="# in-place bitwise", start=1217, len=18)
+Token(kind=ws_newline, text="\n", start=1235, len=1)
+#94: # in-place bitwise
 
-Token(kind=ud_identifier, text="i2", start=1222, len=2)
-Token(kind=sm_lshifteq, text="<<=", start=1225, len=3)
-Token(kind=ud_identifier, text="a", start=1229, len=1)
-Token(kind=ws_newline, text="\n", start=1230, len=1)
-#97: i2 <<= a
+Token(kind=ud_identifier, text="i2", start=1236, len=2)
+Token(kind=sm_ampersandeq, text="&=", start=1239, len=2)
+Token(kind=ud_identifier, text="a", start=1242, len=1)
+Token(kind=ws_newline, text="\n", start=1243, len=1)
+#95: i2 &= a
 
-Token(kind=ud_identifier, text="i2", start=1231, len=2)
-Token(kind=sm_rshifteq, text=">>=", start=1234, len=3)
-Token(kind=ud_identifier, text="a", start=1238, len=1)
-Token(kind=ws_newline, text="\n", start=1239, len=1)
-#98: i2 >>= a
-
-Token(kind=ws_newline, text="\n", start=1240, len=1)
-#99: 
-
-Token(kind=ud_comment, text="# identity", start=1241, len=10)
+Token(kind=ud_identifier, text="i2", start=1244, len=2)
+Token(kind=sm_pipeeq, text="|=", start=1247, len=2)
+Token(kind=ud_identifier, text="a", start=1250, len=1)
 Token(kind=ws_newline, text="\n", start=1251, len=1)
-#100: # identity
+#96: i2 |= a
 
-Token(kind=ud_identifier, text="print", start=1252, len=5)
-Token(kind=sm_lparen, text="(", start=1257, len=1)
+Token(kind=ud_identifier, text="i2", start=1252, len=2)
+Token(kind=sm_hateq, text="^=", start=1255, len=2)
 Token(kind=ud_identifier, text="a", start=1258, len=1)
-Token(kind=kw_is, text="is", start=1260, len=2)
-Token(kind=ud_identifier, text="b", start=1263, len=1)
-Token(kind=sm_rparen, text=")", start=1264, len=1)
-Token(kind=ws_newline, text="\n", start=1265, len=1)
-#101: print(a is b)
+Token(kind=ws_newline, text="\n", start=1259, len=1)
+#97: i2 ^= a
 
-Token(kind=ud_identifier, text="print", start=1266, len=5)
-Token(kind=sm_lparen, text="(", start=1271, len=1)
-Token(kind=ud_identifier, text="a", start=1272, len=1)
-Token(kind=kw_is, text="is", start=1274, len=2)
-Token(kind=kw_not, text="not", start=1277, len=3)
-Token(kind=ud_identifier, text="b", start=1281, len=1)
-Token(kind=sm_rparen, text=")", start=1282, len=1)
-Token(kind=ws_newline, text="\n", start=1283, len=1)
-#102: print(a is not b)
+Token(kind=ud_identifier, text="i2", start=1260, len=2)
+Token(kind=sm_lshifteq, text="<<=", start=1263, len=3)
+Token(kind=ud_identifier, text="a", start=1267, len=1)
+Token(kind=ws_newline, text="\n", start=1268, len=1)
+#98: i2 <<= a
 
-Token(kind=ws_newline, text="\n", start=1284, len=1)
-#103: 
+Token(kind=ud_identifier, text="i2", start=1269, len=2)
+Token(kind=sm_rshifteq, text=">>=", start=1272, len=3)
+Token(kind=ud_identifier, text="a", start=1276, len=1)
+Token(kind=ws_newline, text="\n", start=1277, len=1)
+#99: i2 >>= a
 
-Token(kind=ud_comment, text="# collections", start=1285, len=13)
-Token(kind=ws_newline, text="\n", start=1298, len=1)
-#104: # collections
+Token(kind=ws_newline, text="\n", start=1278, len=1)
+#100: 
 
-Token(kind=ud_identifier, text="print", start=1299, len=5)
-Token(kind=sm_lparen, text="(", start=1304, len=1)
-Token(kind=ud_identifier, text="a", start=1305, len=1)
-Token(kind=kw_in, text="in", start=1307, len=2)
-Token(kind=ud_identifier, text="c", start=1310, len=1)
-Token(kind=sm_rparen, text=")", start=1311, len=1)
-Token(kind=ws_newline, text="\n", start=1312, len=1)
-#105: print(a in c)
+Token(kind=ud_comment, text="# identity", start=1279, len=10)
+Token(kind=ws_newline, text="\n", start=1289, len=1)
+#101: # identity
 
-Token(kind=ud_identifier, text="print", start=1313, len=5)
-Token(kind=sm_lparen, text="(", start=1318, len=1)
-Token(kind=ud_identifier, text="a", start=1319, len=1)
-Token(kind=kw_not, text="not", start=1321, len=3)
-Token(kind=kw_in, text="in", start=1325, len=2)
-Token(kind=ud_identifier, text="c", start=1328, len=1)
-Token(kind=sm_rparen, text=")", start=1329, len=1)
-Token(kind=ws_newline, text="\n", start=1330, len=1)
-#106: print(a not in c)
+Token(kind=ud_identifier, text="print", start=1290, len=5)
+Token(kind=sm_lparen, text="(", start=1295, len=1)
+Token(kind=ud_identifier, text="a", start=1296, len=1)
+Token(kind=kw_is, text="is", start=1298, len=2)
+Token(kind=ud_identifier, text="b", start=1301, len=1)
+Token(kind=sm_rparen, text=")", start=1302, len=1)
+Token(kind=ws_newline, text="\n", start=1303, len=1)
+#102: print(a is b)
 
-Token(kind=ud_identifier, text="print", start=1331, len=5)
-Token(kind=sm_lparen, text="(", start=1336, len=1)
-Token(kind=ud_identifier, text="c", start=1337, len=1)
-Token(kind=sm_lbrack, text="[", start=1338, len=1)
-Token(kind=ud_identifier, text="a", start=1339, len=1)
-Token(kind=sm_rbrack, text="]", start=1340, len=1)
-Token(kind=sm_rparen, text=")", start=1341, len=1)
-Token(kind=ws_newline, text="\n", start=1342, len=1)
-#107: print(c[a])
+Token(kind=ud_identifier, text="print", start=1304, len=5)
+Token(kind=sm_lparen, text="(", start=1309, len=1)
+Token(kind=ud_identifier, text="a", start=1310, len=1)
+Token(kind=kw_is, text="is", start=1312, len=2)
+Token(kind=kw_not, text="not", start=1315, len=3)
+Token(kind=ud_identifier, text="b", start=1319, len=1)
+Token(kind=sm_rparen, text=")", start=1320, len=1)
+Token(kind=ws_newline, text="\n", start=1321, len=1)
+#103: print(a is not b)
 
-Token(kind=kw_del, text="del", start=1343, len=3)
-Token(kind=ud_identifier, text="c", start=1347, len=1)
-Token(kind=sm_lbrack, text="[", start=1348, len=1)
-Token(kind=ud_identifier, text="a", start=1349, len=1)
-Token(kind=sm_rbrack, text="]", start=1350, len=1)
-Token(kind=ws_newline, text="\n", start=1351, len=1)
-#108: del c[a]
+Token(kind=ws_newline, text="\n", start=1322, len=1)
+#104: 
 
-Token(kind=ws_newline, text="\n", start=1352, len=1)
-#109: 
+Token(kind=ud_comment, text="# collections", start=1323, len=13)
+Token(kind=ws_newline, text="\n", start=1336, len=1)
+#105: # collections
 
-Token(kind=ud_comment, text="# functions", start=1353, len=11)
-Token(kind=ws_newline, text="\n", start=1364, len=1)
-#110: # functions
+Token(kind=ud_identifier, text="print", start=1337, len=5)
+Token(kind=sm_lparen, text="(", start=1342, len=1)
+Token(kind=ud_identifier, text="a", start=1343, len=1)
+Token(kind=kw_in, text="in", start=1345, len=2)
+Token(kind=ud_identifier, text="c", start=1348, len=1)
+Token(kind=sm_rparen, text=")", start=1349, len=1)
+Token(kind=ws_newline, text="\n", start=1350, len=1)
+#106: print(a in c)
 
-Token(kind=kw_def, text="def", start=1365, len=3)
-Token(kind=ud_identifier, text="add", start=1369, len=3)
-Token(kind=sm_lparen, text="(", start=1372, len=1)
-Token(kind=ud_identifier, text="a", start=1373, len=1)
-Token(kind=sm_colon, text=":", start=1374, len=1)
-Token(kind=ud_identifier, text="int", start=1376, len=3)
-Token(kind=sm_comma, text=",", start=1379, len=1)
-Token(kind=ud_identifier, text="b", start=1381, len=1)
-Token(kind=sm_colon, text=":", start=1382, len=1)
-Token(kind=ud_identifier, text="int", start=1384, len=3)
-Token(kind=sm_rparen, text=")", start=1387, len=1)
-Token(kind=sm_arrow, text="->", start=1389, len=2)
-Token(kind=ud_identifier, text="int", start=1392, len=3)
-Token(kind=sm_colon, text=":", start=1395, len=1)
-Token(kind=ws_newline, text="\n", start=1396, len=1)
-#111: def add(a: int, b: int) -> int:
+Token(kind=ud_identifier, text="print", start=1351, len=5)
+Token(kind=sm_lparen, text="(", start=1356, len=1)
+Token(kind=ud_identifier, text="a", start=1357, len=1)
+Token(kind=kw_not, text="not", start=1359, len=3)
+Token(kind=kw_in, text="in", start=1363, len=2)
+Token(kind=ud_identifier, text="c", start=1366, len=1)
+Token(kind=sm_rparen, text=")", start=1367, len=1)
+Token(kind=ws_newline, text="\n", start=1368, len=1)
+#107: print(a not in c)
 
-Token(kind=ws_whitespace, text="    ", start=1397, len=4)
-Token(kind=kw_return, text="return", start=1401, len=6)
-Token(kind=ud_identifier, text="a", start=1408, len=1)
-Token(kind=sm_plus, text="+", start=1410, len=1)
-Token(kind=ud_identifier, text="b", start=1412, len=1)
-Token(kind=ws_newline, text="\n", start=1413, len=1)
-#112:     return a + b
+Token(kind=ud_identifier, text="print", start=1369, len=5)
+Token(kind=sm_lparen, text="(", start=1374, len=1)
+Token(kind=ud_identifier, text="c", start=1375, len=1)
+Token(kind=sm_lbrack, text="[", start=1376, len=1)
+Token(kind=ud_identifier, text="a", start=1377, len=1)
+Token(kind=sm_rbrack, text="]", start=1378, len=1)
+Token(kind=sm_rparen, text=")", start=1379, len=1)
+Token(kind=ws_newline, text="\n", start=1380, len=1)
+#108: print(c[a])
 
-Token(kind=ws_newline, text="\n", start=1414, len=1)
-#113: 
+Token(kind=kw_del, text="del", start=1381, len=3)
+Token(kind=ud_identifier, text="c", start=1385, len=1)
+Token(kind=sm_lbrack, text="[", start=1386, len=1)
+Token(kind=ud_identifier, text="a", start=1387, len=1)
+Token(kind=sm_rbrack, text="]", start=1388, len=1)
+Token(kind=ws_newline, text="\n", start=1389, len=1)
+#109: del c[a]
 
-Token(kind=ud_comment, text="# classes and decorators", start=1415, len=24)
-Token(kind=ws_newline, text="\n", start=1439, len=1)
-#114: # classes and decorators
+Token(kind=ws_newline, text="\n", start=1390, len=1)
+#110: 
 
-Token(kind=sm_at, text="@", start=1440, len=1)
-Token(kind=ud_identifier, text="dc", start=1441, len=2)
-Token(kind=sm_dot, text=".", start=1443, len=1)
-Token(kind=ud_identifier, text="dataclass", start=1444, len=9)
-Token(kind=sm_lparen, text="(", start=1453, len=1)
-Token(kind=ud_identifier, text="frozen", start=1454, len=6)
-Token(kind=sm_eq, text="=", start=1460, len=1)
-Token(kind=kw_true, text="True", start=1461, len=4)
-Token(kind=sm_rparen, text=")", start=1465, len=1)
-Token(kind=ws_newline, text="\n", start=1466, len=1)
-#115: @dc.dataclass(frozen=True)
+Token(kind=ud_comment, text="# conditionals", start=1391, len=14)
+Token(kind=ws_newline, text="\n", start=1405, len=1)
+#111: # conditionals
 
-Token(kind=kw_class, text="class", start=1467, len=5)
-Token(kind=ud_identifier, text="MyClass", start=1473, len=7)
-Token(kind=sm_colon, text=":", start=1480, len=1)
-Token(kind=ws_newline, text="\n", start=1481, len=1)
-#116: class MyClass:
+Token(kind=kw_if, text="if", start=1406, len=2)
+Token(kind=ud_identifier, text="a", start=1409, len=1)
+Token(kind=sm_twoeq, text="==", start=1411, len=2)
+Token(kind=li_int, text="1", start=1414, len=1)
+Token(kind=sm_colon, text=":", start=1415, len=1)
+Token(kind=ws_newline, text="\n", start=1416, len=1)
+#112: if a == 1:
 
-Token(kind=ws_whitespace, text="    ", start=1482, len=4)
-Token(kind=ud_identifier, text="a", start=1486, len=1)
-Token(kind=sm_colon, text=":", start=1487, len=1)
-Token(kind=ud_identifier, text="int", start=1489, len=3)
-Token(kind=ws_newline, text="\n", start=1492, len=1)
-#117:     a: int
+Token(kind=ws_whitespace, text="    ", start=1417, len=4)
+Token(kind=ud_identifier, text="print", start=1421, len=5)
+Token(kind=sm_lparen, text="(", start=1426, len=1)
+Token(kind=li_str, text=""a == 1"", start=1427, len=8)
+Token(kind=sm_rparen, text=")", start=1435, len=1)
+Token(kind=ws_newline, text="\n", start=1436, len=1)
+#113:     print("a == 1")
 
-Token(kind=ws_whitespace, text="    ", start=1493, len=4)
-Token(kind=ud_identifier, text="b", start=1497, len=1)
-Token(kind=sm_colon, text=":", start=1498, len=1)
-Token(kind=ud_identifier, text="bool", start=1500, len=4)
-Token(kind=ws_newline, text="\n", start=1504, len=1)
-#118:     b: bool
+Token(kind=kw_elif, text="elif", start=1437, len=4)
+Token(kind=ud_identifier, text="a", start=1442, len=1)
+Token(kind=sm_twoeq, text="==", start=1444, len=2)
+Token(kind=li_int, text="2", start=1447, len=1)
+Token(kind=sm_colon, text=":", start=1448, len=1)
+Token(kind=ws_newline, text="\n", start=1449, len=1)
+#114: elif a == 2:
+
+Token(kind=ws_whitespace, text="    ", start=1450, len=4)
+Token(kind=ud_identifier, text="print", start=1454, len=5)
+Token(kind=sm_lparen, text="(", start=1459, len=1)
+Token(kind=li_str, text=""a == 2"", start=1460, len=8)
+Token(kind=sm_rparen, text=")", start=1468, len=1)
+Token(kind=ws_newline, text="\n", start=1469, len=1)
+#115:     print("a == 2")
+
+Token(kind=kw_else, text="else", start=1470, len=4)
+Token(kind=sm_colon, text=":", start=1474, len=1)
+Token(kind=ws_newline, text="\n", start=1475, len=1)
+#116: else:
+
+Token(kind=ws_whitespace, text="    ", start=1476, len=4)
+Token(kind=ud_identifier, text="print", start=1480, len=5)
+Token(kind=sm_lparen, text="(", start=1485, len=1)
+Token(kind=li_str, text=""a > 2"", start=1486, len=7)
+Token(kind=sm_rparen, text=")", start=1493, len=1)
+Token(kind=ws_newline, text="\n", start=1494, len=1)
+#117:     print("a > 2")
+
+Token(kind=ws_newline, text="\n", start=1495, len=1)
+#118: 
+
+Token(kind=ud_comment, text="# exceptions", start=1496, len=12)
+Token(kind=ws_newline, text="\n", start=1508, len=1)
+#119: # exceptions
+
+Token(kind=kw_try, text="try", start=1509, len=3)
+Token(kind=sm_colon, text=":", start=1512, len=1)
+Token(kind=ws_newline, text="\n", start=1513, len=1)
+#120: try:
+
+Token(kind=ws_whitespace, text="    ", start=1514, len=4)
+Token(kind=kw_raise, text="raise", start=1518, len=5)
+Token(kind=ud_identifier, text="Exception", start=1524, len=9)
+Token(kind=sm_lparen, text="(", start=1533, len=1)
+Token(kind=li_str, text=""oh no"", start=1534, len=7)
+Token(kind=sm_rparen, text=")", start=1541, len=1)
+Token(kind=ws_newline, text="\n", start=1542, len=1)
+#121:     raise Exception("oh no")
+
+Token(kind=kw_except, text="except", start=1543, len=6)
+Token(kind=ud_identifier, text="Exception", start=1550, len=9)
+Token(kind=kw_as, text="as", start=1560, len=2)
+Token(kind=ud_identifier, text="err", start=1563, len=3)
+Token(kind=sm_colon, text=":", start=1566, len=1)
+Token(kind=ws_newline, text="\n", start=1567, len=1)
+#122: except Exception as err:
+
+Token(kind=ws_whitespace, text="    ", start=1568, len=4)
+Token(kind=ud_identifier, text="print", start=1572, len=5)
+Token(kind=sm_lparen, text="(", start=1577, len=1)
+Token(kind=li_str, text=""saved:"", start=1578, len=8)
+Token(kind=sm_comma, text=",", start=1586, len=1)
+Token(kind=ud_identifier, text="err", start=1588, len=3)
+Token(kind=sm_rparen, text=")", start=1591, len=1)
+Token(kind=ws_newline, text="\n", start=1592, len=1)
+#123:     print("saved:", err)
+
+Token(kind=kw_finally, text="finally", start=1593, len=7)
+Token(kind=sm_colon, text=":", start=1600, len=1)
+Token(kind=ws_newline, text="\n", start=1601, len=1)
+#124: finally:
+
+Token(kind=ws_whitespace, text="    ", start=1602, len=4)
+Token(kind=kw_pass, text="pass", start=1606, len=4)
+Token(kind=ws_newline, text="\n", start=1610, len=1)
+#125:     pass
+
+Token(kind=ws_newline, text="\n", start=1611, len=1)
+#126: 
+
+Token(kind=ud_comment, text="# assertions", start=1612, len=12)
+Token(kind=ws_newline, text="\n", start=1624, len=1)
+#127: # assertions
+
+Token(kind=kw_assert, text="assert", start=1625, len=6)
+Token(kind=li_int, text="1", start=1632, len=1)
+Token(kind=sm_twoeq, text="==", start=1634, len=2)
+Token(kind=li_int, text="1", start=1637, len=1)
+Token(kind=ws_newline, text="\n", start=1638, len=1)
+#128: assert 1 == 1
+
+Token(kind=ws_newline, text="\n", start=1639, len=1)
+#129: 
+
+Token(kind=ud_comment, text="# loops", start=1640, len=7)
+Token(kind=ws_newline, text="\n", start=1647, len=1)
+#130: # loops
+
+Token(kind=kw_for, text="for", start=1648, len=3)
+Token(kind=ud_identifier, text="i", start=1652, len=1)
+Token(kind=kw_in, text="in", start=1654, len=2)
+Token(kind=ud_identifier, text="range", start=1657, len=5)
+Token(kind=sm_lparen, text="(", start=1662, len=1)
+Token(kind=li_int, text="5", start=1663, len=1)
+Token(kind=sm_rparen, text=")", start=1664, len=1)
+Token(kind=sm_colon, text=":", start=1665, len=1)
+Token(kind=ws_newline, text="\n", start=1666, len=1)
+#131: for i in range(5):
+
+Token(kind=ws_whitespace, text="    ", start=1667, len=4)
+Token(kind=ud_identifier, text="print", start=1671, len=5)
+Token(kind=sm_lparen, text="(", start=1676, len=1)
+Token(kind=ud_identifier, text="i", start=1677, len=1)
+Token(kind=sm_rparen, text=")", start=1678, len=1)
+Token(kind=ws_newline, text="\n", start=1679, len=1)
+#132:     print(i)
+
+Token(kind=ud_identifier, text="i", start=1680, len=1)
+Token(kind=sm_eq, text="=", start=1682, len=1)
+Token(kind=li_int, text="0", start=1684, len=1)
+Token(kind=ws_newline, text="\n", start=1685, len=1)
+#133: i = 0
+
+Token(kind=kw_while, text="while", start=1686, len=5)
+Token(kind=kw_true, text="True", start=1692, len=4)
+Token(kind=sm_colon, text=":", start=1696, len=1)
+Token(kind=ws_newline, text="\n", start=1697, len=1)
+#134: while True:
+
+Token(kind=ws_whitespace, text="    ", start=1698, len=4)
+Token(kind=ud_identifier, text="i", start=1702, len=1)
+Token(kind=sm_pluseq, text="+=", start=1704, len=2)
+Token(kind=li_int, text="1", start=1707, len=1)
+Token(kind=ws_newline, text="\n", start=1708, len=1)
+#135:     i += 1
+
+Token(kind=ws_whitespace, text="    ", start=1709, len=4)
+Token(kind=kw_if, text="if", start=1713, len=2)
+Token(kind=ud_identifier, text="i", start=1716, len=1)
+Token(kind=sm_ampersand, text="&", start=1718, len=1)
+Token(kind=li_int, text="1", start=1720, len=1)
+Token(kind=sm_colon, text=":", start=1721, len=1)
+Token(kind=ws_newline, text="\n", start=1722, len=1)
+#136:     if i & 1:
+
+Token(kind=ws_whitespace, text="        ", start=1723, len=8)
+Token(kind=kw_continue, text="continue", start=1731, len=8)
+Token(kind=ws_newline, text="\n", start=1739, len=1)
+#137:         continue
+
+Token(kind=ws_whitespace, text="    ", start=1740, len=4)
+Token(kind=ud_identifier, text="print", start=1744, len=5)
+Token(kind=sm_lparen, text="(", start=1749, len=1)
+Token(kind=ud_identifier, text="i", start=1750, len=1)
+Token(kind=sm_rparen, text=")", start=1751, len=1)
+Token(kind=ws_newline, text="\n", start=1752, len=1)
+#138:     print(i)
+
+Token(kind=ws_whitespace, text="    ", start=1753, len=4)
+Token(kind=kw_if, text="if", start=1757, len=2)
+Token(kind=ud_identifier, text="i", start=1760, len=1)
+Token(kind=sm_twoeq, text="==", start=1762, len=2)
+Token(kind=li_int, text="10", start=1765, len=2)
+Token(kind=sm_colon, text=":", start=1767, len=1)
+Token(kind=ws_newline, text="\n", start=1768, len=1)
+#139:     if i == 10:
+
+Token(kind=ws_whitespace, text="        ", start=1769, len=8)
+Token(kind=kw_break, text="break", start=1777, len=5)
+Token(kind=ws_newline, text="\n", start=1782, len=1)
+#140:         break
+
+Token(kind=ws_newline, text="\n", start=1783, len=1)
+#141: 
+
+Token(kind=ws_newline, text="\n", start=1784, len=1)
+#142: 
+
+Token(kind=ud_comment, text="# functions", start=1785, len=11)
+Token(kind=ws_newline, text="\n", start=1796, len=1)
+#143: # functions
+
+Token(kind=kw_def, text="def", start=1797, len=3)
+Token(kind=ud_identifier, text="add", start=1801, len=3)
+Token(kind=sm_lparen, text="(", start=1804, len=1)
+Token(kind=ud_identifier, text="a", start=1805, len=1)
+Token(kind=sm_colon, text=":", start=1806, len=1)
+Token(kind=ud_identifier, text="int", start=1808, len=3)
+Token(kind=sm_comma, text=",", start=1811, len=1)
+Token(kind=ud_identifier, text="b", start=1813, len=1)
+Token(kind=sm_colon, text=":", start=1814, len=1)
+Token(kind=ud_identifier, text="int", start=1816, len=3)
+Token(kind=sm_rparen, text=")", start=1819, len=1)
+Token(kind=sm_arrow, text="->", start=1821, len=2)
+Token(kind=ud_identifier, text="int", start=1824, len=3)
+Token(kind=sm_colon, text=":", start=1827, len=1)
+Token(kind=ws_newline, text="\n", start=1828, len=1)
+#144: def add(a: int, b: int) -> int:
+
+Token(kind=ws_whitespace, text="    ", start=1829, len=4)
+Token(kind=kw_return, text="return", start=1833, len=6)
+Token(kind=ud_identifier, text="a", start=1840, len=1)
+Token(kind=sm_plus, text="+", start=1842, len=1)
+Token(kind=ud_identifier, text="b", start=1844, len=1)
+Token(kind=ws_newline, text="\n", start=1845, len=1)
+#145:     return a + b
+
+Token(kind=ws_newline, text="\n", start=1846, len=1)
+#146: 
+
+Token(kind=ud_comment, text="# lambdas", start=1847, len=9)
+Token(kind=ws_newline, text="\n", start=1856, len=1)
+#147: # lambdas
+
+Token(kind=ud_identifier, text="lamb_add", start=1857, len=8)
+Token(kind=sm_eq, text="=", start=1866, len=1)
+Token(kind=kw_lambda, text="lambda", start=1868, len=6)
+Token(kind=ud_identifier, text="a", start=1875, len=1)
+Token(kind=sm_comma, text=",", start=1876, len=1)
+Token(kind=ud_identifier, text="b", start=1878, len=1)
+Token(kind=sm_colon, text=":", start=1879, len=1)
+Token(kind=ud_identifier, text="a", start=1881, len=1)
+Token(kind=sm_plus, text="+", start=1883, len=1)
+Token(kind=ud_identifier, text="b", start=1885, len=1)
+Token(kind=ws_newline, text="\n", start=1886, len=1)
+#148: lamb_add = lambda a, b: a + b
+
+Token(kind=ws_newline, text="\n", start=1887, len=1)
+#149: 
+
+Token(kind=ud_comment, text="# classes and decorators", start=1888, len=24)
+Token(kind=ws_newline, text="\n", start=1912, len=1)
+#150: # classes and decorators
+
+Token(kind=sm_at, text="@", start=1913, len=1)
+Token(kind=ud_identifier, text="dc", start=1914, len=2)
+Token(kind=sm_dot, text=".", start=1916, len=1)
+Token(kind=ud_identifier, text="dataclass", start=1917, len=9)
+Token(kind=sm_lparen, text="(", start=1926, len=1)
+Token(kind=ud_identifier, text="frozen", start=1927, len=6)
+Token(kind=sm_eq, text="=", start=1933, len=1)
+Token(kind=kw_true, text="True", start=1934, len=4)
+Token(kind=sm_rparen, text=")", start=1938, len=1)
+Token(kind=ws_newline, text="\n", start=1939, len=1)
+#151: @dc.dataclass(frozen=True)
+
+Token(kind=kw_class, text="class", start=1940, len=5)
+Token(kind=ud_identifier, text="MyClass", start=1946, len=7)
+Token(kind=sm_colon, text=":", start=1953, len=1)
+Token(kind=ws_newline, text="\n", start=1954, len=1)
+#152: class MyClass:
+
+Token(kind=ws_whitespace, text="    ", start=1955, len=4)
+Token(kind=ud_identifier, text="a", start=1959, len=1)
+Token(kind=sm_colon, text=":", start=1960, len=1)
+Token(kind=ud_identifier, text="int", start=1962, len=3)
+Token(kind=ws_newline, text="\n", start=1965, len=1)
+#153:     a: int
+
+Token(kind=ws_whitespace, text="    ", start=1966, len=4)
+Token(kind=ud_identifier, text="b", start=1970, len=1)
+Token(kind=sm_colon, text=":", start=1971, len=1)
+Token(kind=ud_identifier, text="bool", start=1973, len=4)
+Token(kind=ws_newline, text="\n", start=1977, len=1)
+#154:     b: bool
+
+Token(kind=ws_newline, text="\n", start=1978, len=1)
+#155: 
+
+Token(kind=ud_comment, text="# generators", start=1979, len=12)
+Token(kind=ws_newline, text="\n", start=1991, len=1)
+#156: # generators
+
+Token(kind=kw_def, text="def", start=1992, len=3)
+Token(kind=ud_identifier, text="my_gen", start=1996, len=6)
+Token(kind=sm_lparen, text="(", start=2002, len=1)
+Token(kind=sm_rparen, text=")", start=2003, len=1)
+Token(kind=sm_colon, text=":", start=2004, len=1)
+Token(kind=ws_newline, text="\n", start=2005, len=1)
+#157: def my_gen():
+
+Token(kind=ws_whitespace, text="    ", start=2006, len=4)
+Token(kind=ud_identifier, text="print", start=2010, len=5)
+Token(kind=sm_lparen, text="(", start=2015, len=1)
+Token(kind=li_str, text=""hey"", start=2016, len=5)
+Token(kind=sm_rparen, text=")", start=2021, len=1)
+Token(kind=ws_newline, text="\n", start=2022, len=1)
+#158:     print("hey")
+
+Token(kind=ws_whitespace, text="    ", start=2023, len=4)
+Token(kind=kw_yield, text="yield", start=2027, len=5)
+Token(kind=ws_newline, text="\n", start=2032, len=1)
+#159:     yield
+
+Token(kind=ws_whitespace, text="    ", start=2033, len=4)
+Token(kind=ud_identifier, text="print", start=2037, len=5)
+Token(kind=sm_lparen, text="(", start=2042, len=1)
+Token(kind=li_str, text=""ho"", start=2043, len=4)
+Token(kind=sm_rparen, text=")", start=2047, len=1)
+Token(kind=ws_newline, text="\n", start=2048, len=1)
+#160:     print("ho")
+
+Token(kind=ws_whitespace, text="    ", start=2049, len=4)
+Token(kind=kw_yield, text="yield", start=2053, len=5)
+Token(kind=ws_newline, text="\n", start=2058, len=1)
+#161:     yield
+
+Token(kind=ud_identifier, text="g", start=2059, len=1)
+Token(kind=sm_eq, text="=", start=2061, len=1)
+Token(kind=ud_identifier, text="iter", start=2063, len=4)
+Token(kind=sm_lparen, text="(", start=2067, len=1)
+Token(kind=ud_identifier, text="my_gen", start=2068, len=6)
+Token(kind=sm_lparen, text="(", start=2074, len=1)
+Token(kind=sm_rparen, text=")", start=2075, len=1)
+Token(kind=sm_rparen, text=")", start=2076, len=1)
+Token(kind=ws_newline, text="\n", start=2077, len=1)
+#162: g = iter(my_gen())
+
+Token(kind=ud_identifier, text="next", start=2078, len=4)
+Token(kind=sm_lparen, text="(", start=2082, len=1)
+Token(kind=ud_identifier, text="g", start=2083, len=1)
+Token(kind=sm_rparen, text=")", start=2084, len=1)
+Token(kind=ws_newline, text="\n", start=2085, len=1)
+#163: next(g)
+
+Token(kind=ud_identifier, text="next", start=2086, len=4)
+Token(kind=sm_lparen, text="(", start=2090, len=1)
+Token(kind=ud_identifier, text="g", start=2091, len=1)
+Token(kind=sm_rparen, text=")", start=2092, len=1)
+Token(kind=ws_newline, text="\n", start=2093, len=1)
+#164: next(g)
+
+Token(kind=ws_newline, text="\n", start=2094, len=1)
+#165: 
+
+Token(kind=ud_comment, text="# context managers", start=2095, len=18)
+Token(kind=ws_newline, text="\n", start=2113, len=1)
+#166: # context managers
+
+Token(kind=sm_at, text="@", start=2114, len=1)
+Token(kind=ud_identifier, text="contextmanager", start=2115, len=14)
+Token(kind=ws_newline, text="\n", start=2129, len=1)
+#167: @contextmanager
+
+Token(kind=kw_def, text="def", start=2130, len=3)
+Token(kind=ud_identifier, text="my_ctx", start=2134, len=6)
+Token(kind=sm_lparen, text="(", start=2140, len=1)
+Token(kind=sm_rparen, text=")", start=2141, len=1)
+Token(kind=sm_colon, text=":", start=2142, len=1)
+Token(kind=ws_newline, text="\n", start=2143, len=1)
+#168: def my_ctx():
+
+Token(kind=ws_whitespace, text="    ", start=2144, len=4)
+Token(kind=kw_yield, text="yield", start=2148, len=5)
+Token(kind=li_int, text="1", start=2154, len=1)
+Token(kind=ws_newline, text="\n", start=2155, len=1)
+#169:     yield 1
+
+Token(kind=kw_with, text="with", start=2156, len=4)
+Token(kind=ud_identifier, text="my_ctx", start=2161, len=6)
+Token(kind=sm_lparen, text="(", start=2167, len=1)
+Token(kind=sm_rparen, text=")", start=2168, len=1)
+Token(kind=kw_as, text="as", start=2170, len=2)
+Token(kind=ud_identifier, text="ctx", start=2173, len=3)
+Token(kind=sm_colon, text=":", start=2176, len=1)
+Token(kind=ws_newline, text="\n", start=2177, len=1)
+#170: with my_ctx() as ctx:
+
+Token(kind=ws_whitespace, text="    ", start=2178, len=4)
+Token(kind=ud_identifier, text="print", start=2182, len=5)
+Token(kind=sm_lparen, text="(", start=2187, len=1)
+Token(kind=li_str, text=""ctx"", start=2188, len=5)
+Token(kind=sm_comma, text=",", start=2193, len=1)
+Token(kind=ud_identifier, text="ctx", start=2195, len=3)
+Token(kind=sm_rparen, text=")", start=2198, len=1)
+Token(kind=ws_newline, text="\n", start=2199, len=1)
+#171:     print("ctx", ctx)
+
+Token(kind=ws_newline, text="\n", start=2200, len=1)
+#172: 
+
+Token(kind=ud_comment, text="# asyncio", start=2201, len=9)
+Token(kind=ws_newline, text="\n", start=2210, len=1)
+#173: # asyncio
+
+Token(kind=kw_async, text="async", start=2211, len=5)
+Token(kind=kw_def, text="def", start=2217, len=3)
+Token(kind=ud_identifier, text="foo", start=2221, len=3)
+Token(kind=sm_lparen, text="(", start=2224, len=1)
+Token(kind=sm_rparen, text=")", start=2225, len=1)
+Token(kind=sm_arrow, text="->", start=2227, len=2)
+Token(kind=ud_identifier, text="int", start=2230, len=3)
+Token(kind=sm_colon, text=":", start=2233, len=1)
+Token(kind=ws_newline, text="\n", start=2234, len=1)
+#174: async def foo() -> int:
+
+Token(kind=ws_whitespace, text="    ", start=2235, len=4)
+Token(kind=kw_global, text="global", start=2239, len=6)
+Token(kind=ud_identifier, text="i", start=2246, len=1)
+Token(kind=ws_newline, text="\n", start=2247, len=1)
+#175:     global i
+
+Token(kind=ws_whitespace, text="    ", start=2248, len=4)
+Token(kind=kw_return, text="return", start=2252, len=6)
+Token(kind=ud_identifier, text="i", start=2259, len=1)
+Token(kind=ws_newline, text="\n", start=2260, len=1)
+#176:     return i
+
+Token(kind=kw_async, text="async", start=2261, len=5)
+Token(kind=kw_def, text="def", start=2267, len=3)
+Token(kind=ud_identifier, text="bar", start=2271, len=3)
+Token(kind=sm_lparen, text="(", start=2274, len=1)
+Token(kind=sm_rparen, text=")", start=2275, len=1)
+Token(kind=sm_arrow, text="->", start=2277, len=2)
+Token(kind=ud_identifier, text="int", start=2280, len=3)
+Token(kind=sm_colon, text=":", start=2283, len=1)
+Token(kind=ws_newline, text="\n", start=2284, len=1)
+#177: async def bar() -> int:
+
+Token(kind=ws_whitespace, text="    ", start=2285, len=4)
+Token(kind=ud_identifier, text="a", start=2289, len=1)
+Token(kind=sm_eq, text="=", start=2291, len=1)
+Token(kind=li_int, text="2", start=2293, len=1)
+Token(kind=ws_newline, text="\n", start=2294, len=1)
+#178:     a = 2
+
+Token(kind=ws_whitespace, text="    ", start=2295, len=4)
+Token(kind=kw_def, text="def", start=2299, len=3)
+Token(kind=ud_identifier, text="baz", start=2303, len=3)
+Token(kind=sm_lparen, text="(", start=2306, len=1)
+Token(kind=sm_rparen, text=")", start=2307, len=1)
+Token(kind=sm_arrow, text="->", start=2309, len=2)
+Token(kind=ud_identifier, text="int", start=2312, len=3)
+Token(kind=sm_colon, text=":", start=2315, len=1)
+Token(kind=ws_newline, text="\n", start=2316, len=1)
+#179:     def baz() -> int:
+
+Token(kind=ws_whitespace, text="        ", start=2317, len=8)
+Token(kind=kw_nonlocal, text="nonlocal", start=2325, len=8)
+Token(kind=ud_identifier, text="a", start=2334, len=1)
+Token(kind=ws_newline, text="\n", start=2335, len=1)
+#180:         nonlocal a
+
+Token(kind=ws_whitespace, text="        ", start=2336, len=8)
+Token(kind=kw_return, text="return", start=2344, len=6)
+Token(kind=ud_identifier, text="a", start=2351, len=1)
+Token(kind=ws_newline, text="\n", start=2352, len=1)
+#181:         return a
+
+Token(kind=ws_newline, text="\n", start=2353, len=1)
+#182: 
+
+Token(kind=ws_whitespace, text="    ", start=2354, len=4)
+Token(kind=kw_return, text="return", start=2358, len=6)
+Token(kind=kw_await, text="await", start=2365, len=5)
+Token(kind=ud_identifier, text="foo", start=2371, len=3)
+Token(kind=sm_lparen, text="(", start=2374, len=1)
+Token(kind=sm_rparen, text=")", start=2375, len=1)
+Token(kind=sm_plus, text="+", start=2377, len=1)
+Token(kind=ud_identifier, text="baz", start=2379, len=3)
+Token(kind=sm_lparen, text="(", start=2382, len=1)
+Token(kind=sm_rparen, text=")", start=2383, len=1)
+Token(kind=ws_newline, text="\n", start=2384, len=1)
+#183:     return await foo() + baz()
 

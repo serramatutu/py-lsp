@@ -1,5 +1,6 @@
 # imports
 from __future__ import annotations
+from contextlib import contextmanager
 import dataclasses as dc
 
 # int literals
@@ -110,12 +111,76 @@ print(a not in c)
 print(c[a])
 del c[a]
 
+# conditionals
+if a == 1:
+    print("a == 1")
+elif a == 2:
+    print("a == 2")
+else:
+    print("a > 2")
+
+# exceptions
+try:
+    raise Exception("oh no")
+except Exception as err:
+    print("saved:", err)
+finally:
+    pass
+
+# assertions
+assert 1 == 1
+
+# loops
+for i in range(5):
+    print(i)
+i = 0
+while True:
+    i += 1
+    if i & 1:
+        continue
+    print(i)
+    if i == 10:
+        break
+
+
 # functions
 def add(a: int, b: int) -> int:
     return a + b
+
+# lambdas
+lamb_add = lambda a, b: a + b
 
 # classes and decorators
 @dc.dataclass(frozen=True)
 class MyClass:
     a: int
     b: bool
+
+# generators
+def my_gen():
+    print("hey")
+    yield
+    print("ho")
+    yield
+g = iter(my_gen())
+next(g)
+next(g)
+
+# context managers
+@contextmanager
+def my_ctx():
+    yield 1
+with my_ctx() as ctx:
+    print("ctx", ctx)
+
+# asyncio
+async def foo() -> int:
+    global i
+    return i
+async def bar() -> int:
+    a = 2
+    def baz() -> int:
+        nonlocal a
+        return a
+
+    return await foo() + baz()

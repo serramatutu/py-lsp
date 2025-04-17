@@ -1,4 +1,4 @@
-# py-lsp
+# zpy
 
 This is my attempt at building a Python LSP from scratch with no dependencies in Zig.
 

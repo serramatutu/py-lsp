@@ -11,7 +11,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     const app_compile = b.addExecutable(.{
-        .name = "py_lsp",
+        .name = "zpy",
         .root_module = app,
     });
     b.installArtifact(app_compile);

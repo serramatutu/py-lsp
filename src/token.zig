@@ -521,11 +521,18 @@ pub const Tokenizer = struct {
         if (is_float_literal or std.ascii.isDigit(first_char)) {
             self._advanceDigitPart();
             if (self.cur.eof()) {
+                const len = self.cur.pos - start;
                 // 123 or .123
                 return .{
                     .start = start,
-                    .len = self.cur.pos - start,
-                    .kind = if (is_float_literal) .li_float else .li_int,
+                    .len = len,
+                    .kind = if (is_float_literal)
+                        if (len == 1)
+                            .sm_dot
+                        else
+                            .li_float
+                    else
+                        .li_int,
                 };
             }
 
@@ -562,9 +569,19 @@ pub const Tokenizer = struct {
                 self._advanceDigitPart();
             }
 
+            const len = self.cur.pos - start;
+            const kind: Token.Kind =
+                if (is_float_literal)
+                    if (len == 1)
+                        .sm_dot
+                    else
+                        .li_float
+                else
+                    .li_int;
+
             // if is_float_literal: 1e23, 1e-23, 1.2e34, .1e+23, 1.e+23, 123.
             // else: 123
-            return .{ .start = start, .len = self.cur.pos - start, .kind = if (is_float_literal) .li_float else .li_int };
+            return .{ .start = start, .len = len, .kind = kind };
         }
 
         // symbols
@@ -609,7 +626,6 @@ pub const Tokenizer = struct {
             // Other symbols
             '~' => .sm_tilde,
             ':' => .sm_colon,
-            '.' => .sm_dot,
             ',' => .sm_comma,
             '{' => .sm_lbrace,
             '}' => .sm_rbrace,
@@ -617,6 +633,10 @@ pub const Tokenizer = struct {
             ']' => .sm_rbrack,
             '(' => .sm_lparen,
             ')' => .sm_rparen,
+
+            // dot should never be reached as it should be covered in the float
+            // literal case above
+            '.' => unreachable,
 
             // all else is nonsense
             else => .ud_nonsense,

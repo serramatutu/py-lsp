@@ -10,12 +10,17 @@ i_ = 1_000_000
 a = b
 
 # float literals
-f1 = 0.0
-f2 = .0
-f3 = 1e002
-f4 = 1e-002
-f5 = 1E002
-f6 = 1E-002
+floats = [
+    0.0,
+    .0,
+    0.,
+    1e002,
+    1e-002,
+    1E002,
+    1E-002,
+    1.e10,
+    1.0e10,
+]
 
 # other literals
 bool_t = True
@@ -27,8 +32,6 @@ imaginary = 0j
 # dict literals
 c = {}
 c[a] = b
-
-# TODO: list literal, set literals
 
 # string literals
 s1 = "abc"

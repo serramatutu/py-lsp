@@ -362,6 +362,18 @@ pub const Tokenizer = struct {
         }
     }
 
+    /// advance cursor to the first non-digit and non-underscor char or eof
+    ///
+    /// NOTE: this will accept stuff like 1__0__0, which is invalid. This is for
+    /// robustness purposes so that we can keep tokenizing, but it should be checked
+    /// downstream at the parser level once we're casting integer literals to AST
+    /// nodes
+    fn _advanceDigitPart(self: *Tokenizer) void {
+        while (std.ascii.isDigit(self._head()) or self._head() == '_') {
+            self.cur.advance() catch break;
+        }
+    }
+
     /// Advance the cursor if the next token is the expected value (and we're not at eof), otherwise keep
     /// it where it is.
     ///
@@ -419,7 +431,7 @@ pub const Tokenizer = struct {
         const ok = self._advanceUntil(str_delim);
         self.cur.advance() catch {
             // try to consume the closing ' or "
-            // it's OK if we're at EOF
+            // it's OK if we're at eof
         };
 
         return Token{ .start = start, .len = self.cur.pos - start, .kind = if (ok) kind else .ud_nonsense };
@@ -463,7 +475,7 @@ pub const Tokenizer = struct {
                 else => {},
             };
 
-            return Token{ .start = start, .len = id_len, .kind = Tokenizer._identifierToTokenKind(id_text) };
+            return .{ .start = start, .len = id_len, .kind = Tokenizer._identifierToTokenKind(id_text) };
         }
 
         // string literals with no prefix (f, b or u)
@@ -471,6 +483,57 @@ pub const Tokenizer = struct {
             self._line_begun = true;
             self.cur.back();
             return self._advanceStrLiteral(self.cur.pos, .li_str);
+        }
+
+        // numeric literals
+        var is_float_literal = first_char == '.';
+        if (is_float_literal or std.ascii.isDigit(first_char)) {
+            self._advanceDigitPart();
+            if (self.cur.eof()) {
+                // 123 or .123
+                return .{
+                    .start = start,
+                    .len = self.cur.pos - start,
+                    .kind = if (is_float_literal) .li_float else .li_int,
+                };
+            }
+
+            if (!is_float_literal and self._head() == '.') {
+                is_float_literal = true;
+
+                // 123.
+                self.cur.advance() catch return .{
+                    .start = start,
+                    .len = self.cur.pos - start,
+                    .kind = .li_float,
+                };
+
+                self._advanceDigitPart();
+                if (self.cur.eof()) {
+                    // 1.23 or 123.
+                    return Token{
+                        .start = start,
+                        .len = self.cur.pos - start,
+                        .kind = .li_float,
+                    };
+                }
+            }
+
+            if (self._head() == 'e' or self._head() == 'E') {
+                is_float_literal = true;
+
+                self.cur.advance() catch return .{ .start = start, .len = self.cur.pos - start, .kind = .ud_nonsense };
+
+                if (self._head() == '-' or self._head() == '+') {
+                    self.cur.advance() catch return .{ .start = start, .len = self.cur.pos - start, .kind = .ud_nonsense };
+                }
+
+                self._advanceDigitPart();
+            }
+
+            // if is_float_literal: 1e23, 1e-23, 1.2e34, .1e+23, 1.e+23, 123.
+            // else: 123
+            return .{ .start = start, .len = self.cur.pos - start, .kind = if (is_float_literal) .li_float else .li_int };
         }
 
         // symbols
@@ -516,6 +579,7 @@ pub const Tokenizer = struct {
             '~' => .sm_tilde,
             ':' => .sm_colon,
             '.' => .sm_dot,
+            ',' => .sm_comma,
             '{' => .sm_lbrace,
             '}' => .sm_rbrace,
             '[' => .sm_lbrack,
@@ -529,7 +593,7 @@ pub const Tokenizer = struct {
 
         self._line_begun = kind != .ws_newline;
 
-        return Token{ .start = start, .len = self.cur.pos - start, .kind = kind };
+        return .{ .start = start, .len = self.cur.pos - start, .kind = kind };
     }
 };
 
@@ -570,7 +634,9 @@ test "compare snapshots" {
                 },
                 else => {},
             }
-        } else |_| {}
+        } else |_| {
+            // eof
+        }
 
         try session.submitResult(output.slice(),
             // TODO: add header to test files which contain nonsense

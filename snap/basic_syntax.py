@@ -28,7 +28,6 @@ bool_f = False
 none = None
 imaginary = 0j
 
-
 # dict literals
 c = {}
 c[a] = b
@@ -45,6 +44,13 @@ bs = b'abc'
 b = 1
 f = 1
 u = 1
+msb = b"""I am a fat bytes literal."""
+msf = f"""I am a fat f-string {b}."""
+ms1 = """I am a fat string with one line."""
+ms2 = """I am a fat string with multiple lines.
+
+This is an escaped sequence: \"To be or not to be.\"
+"""
 
 # boolean
 print(not a)
@@ -103,7 +109,6 @@ print(a in c)
 print(a not in c)
 print(c[a])
 del c[a]
-
 
 # functions
 def add(a: int, b: int) -> int:

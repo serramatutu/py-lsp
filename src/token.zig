@@ -278,7 +278,7 @@ pub const Token = struct {
     /// pretty-print self onto the writer
     pub fn debugFmt(self: Token, source: []const u8, writer: anytype) !void {
         const text = switch (self.kind) {
-            Kind.ws_newline => "\\n",
+            .ws_newline => "\\n",
             else => source[self.start .. self.start + self.len],
         };
         try writer.print(
@@ -416,7 +416,7 @@ pub const Tokenizer = struct {
     }
 
     /// Assuming we're at the head of a string (" or '), advance until the end of the string
-    /// and return the token.
+    /// and return the token. This works with multiline strings delimited by """ also
     ///
     /// start should usually be self.cur.pos, but it can be earlier for things like f-strings.
     fn _advanceStrLiteral(self: *Tokenizer, start: usize, kind: Token.Kind) Error!Token {
@@ -424,17 +424,48 @@ pub const Tokenizer = struct {
 
         const str_delim = self._head();
 
-        _ = self.cur.advance()
-            // 'f"' at the end of the file
-            catch return Token{ .start = start, .len = self.cur.pos - start, .kind = .ud_nonsense };
+        self.cur.advance()
+        // 'f"' at the end of the file
+        catch return .{ .start = start, .len = self.cur.pos - start, .kind = .ud_nonsense };
 
-        const ok = self._advanceUntil(str_delim);
-        self.cur.advance() catch {
-            // try to consume the closing ' or "
-            // it's OK if we're at eof
+        // ""
+        var is_multiline = false;
+        if (self._head() == str_delim) {
+            self.cur.advance()
+            // "" at the end of the file
+            catch return .{ .start = start, .len = self.cur.pos - start, .kind = kind };
+
+            // "" empty string literal
+            if (self._head() != str_delim) {
+                return .{ .start = start, .len = self.cur.pos - start, .kind = kind };
+            }
+
+            // """ multiline string
+            is_multiline = true;
+            self.cur.advance() catch return .{ .start = start, .len = self.cur.pos - start, .kind = .ud_nonsense };
+        }
+
+        var prev_was_escape = false;
+        while (!self.cur.eof() and
+            (self._head() != str_delim or prev_was_escape) and
+            (self._head() != '\n' or is_multiline))
+        {
+            prev_was_escape = self._head() == '\\';
+            self.cur.advance() catch break;
+        }
+
+        var eof = self.cur.eof();
+        if (!eof) self.cur.advance() catch {
+            eof = true;
+        };
+        if (!eof and is_multiline) self.cur.advance() catch {
+            eof = true;
+        };
+        if (!eof and is_multiline) self.cur.advance() catch {
+            eof = true;
         };
 
-        return Token{ .start = start, .len = self.cur.pos - start, .kind = if (ok) kind else .ud_nonsense };
+        return .{ .start = start, .len = self.cur.pos - start, .kind = if (!eof) kind else .ud_nonsense };
     }
 
     pub fn next(self: *Tokenizer) Error!Token {

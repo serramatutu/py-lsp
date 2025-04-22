@@ -9,3 +9,9 @@ My goals are:
 - Have fun
 
 My far-stretched goal is to eventually replace PyRight in my own editor with this, just to see how it performs. I'm very far away from that at the moment though.
+
+
+## TODO
+
+- Benchmark against real python projects (tokens per second, time to AST)
+- CI

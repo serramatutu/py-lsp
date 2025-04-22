@@ -1,295 +1,249 @@
-//! Python tokenizer
+//! Python token and tokenizer
 //! See reference: https://docs.python.org/3/reference/lexical_analysis.html
 const std = @import("std");
 const assert = std.debug.assert;
-const FixedBufStr = @import("fixed_buf_str.zig").FixedBufStr;
-const SnapshotTestSession = @import("snap.zig").SnapshotTestSession;
+const FixedBufStr = @import("../lib/FixedBufStr.zig");
+const TextCursor = @import("../lib/TextCursor.zig");
+const SnapshotTestSession = @import("../test/SnapshotTestSession.zig");
 
-/// Helper to consume chars from a string
-const TextCursor = struct {
-    text: []const u8,
-    pos: usize,
+const Token = @This();
 
-    pub const Error = error{Eof};
+kind: Kind,
 
-    fn init(text: []const u8) TextCursor {
-        return TextCursor{
-            .text = text,
-            .pos = 0,
-        };
-    }
+start: usize,
+len: usize,
 
-    /// get the current token
-    inline fn curr(self: *TextCursor) Error!u8 {
-        if (self.eof()) {
-            return Error.Eof;
-        }
-        return self.text[self.pos];
-    }
+/// A slimmer version of the token used in case we want to reduce
+/// the memory footprint of an array of tokens (i.e in the parser)
+pub const Slim = struct {
+    kind: Kind,
+    start: usize,
 
-    /// consume a char and return it
-    fn next(self: *TextCursor) Error!u8 {
-        const pos = self.pos;
-        try self.advance();
-        return self.text[pos];
-    }
-
-    /// consume a char
-    fn advance(self: *TextCursor) Error!void {
-        assert(self.pos <= self.text.len);
-        if (self.eof()) {
-            return Error.Eof;
-        }
-        self.pos += 1;
-    }
-
-    /// go back one char
-    fn back(self: *TextCursor) void {
-        assert(self.pos > 0);
-        self.pos -= 1;
-    }
-
-    /// whether the cursor is at the end
-    inline fn eof(self: TextCursor) bool {
-        assert(self.pos <= self.text.len);
-        return self.pos == self.text.len;
+    fn fromToken(t: Token) Slim {
+        return .{ .kind = t.kind, .start = t.start };
     }
 };
 
-test "cursor next" {
-    var cur = TextCursor.init("abc");
-    try std.testing.expectEqual('a', cur.next());
-    try std.testing.expectEqual('b', cur.next());
-    try std.testing.expectEqual('c', cur.next());
-    try std.testing.expectEqual(TextCursor.Error.Eof, cur.next());
+pub const Kind = enum {
+    // keywords
+    kw_and,
+    kw_as,
+    kw_assert,
+    kw_async,
+    kw_await,
+    kw_break,
+    kw_class,
+    kw_continue,
+    kw_def,
+    kw_del,
+    kw_elif,
+    kw_else,
+    kw_except,
+    kw_false,
+    kw_finally,
+    kw_for,
+    kw_from,
+    kw_global,
+    kw_if,
+    kw_import,
+    kw_in,
+    kw_is,
+    kw_lambda,
+    kw_none,
+    kw_nonlocal,
+    kw_not,
+    kw_or,
+    kw_pass,
+    kw_raise,
+    kw_return,
+    kw_true,
+    kw_try,
+    kw_while,
+    kw_with,
+    kw_yield,
+
+    // user-defined
+    /// # a python comment
+    ud_comment,
+    /// an identifier like a variable name, module name or function name
+    ud_identifier,
+    /// any nonsense the user writes that does not match any other token type
+    ud_nonsense,
+
+    // literals
+    /// int literal
+    li_int,
+    /// float literal
+    li_float,
+    /// string literal ("aaa" or u"aaa")
+    li_str,
+    /// format string literal (f"aaa {my_var:.2f}")
+    li_fstr,
+    /// bytes literal (b"aaa")
+    li_bytes,
+
+    // symbols
+    /// &
+    sm_ampersand,
+    /// &=
+    sm_ampersandeq,
+    /// ->
+    sm_arrow,
+    /// @
+    sm_at,
+    /// @=
+    sm_ateq,
+    /// :
+    sm_colon,
+    /// :=
+    sm_coloneq,
+    /// ,
+    sm_comma,
+    /// .
+    sm_dot,
+    /// ...
+    sm_ellipsis,
+    /// =
+    sm_eq,
+    /// !
+    sm_exclamation,
+    /// >
+    sm_gt,
+    /// >=
+    sm_gte,
+    /// ^
+    sm_hat,
+    /// ^=
+    sm_hateq,
+    /// {
+    sm_lbrace,
+    /// [
+    sm_lbrack,
+    /// <
+    sm_lt,
+    /// )
+    sm_lparen,
+    /// <<
+    sm_lshift,
+    /// <<=
+    sm_lshifteq,
+    /// <=
+    sm_lte,
+    /// -
+    sm_minus,
+    /// -=
+    sm_minuseq,
+    /// !=
+    sm_neq,
+    /// %
+    sm_percent,
+    /// %=
+    sm_percenteq,
+    /// |
+    sm_pipe,
+    /// |=
+    sm_pipeeq,
+    /// +
+    sm_plus,
+    /// +=
+    sm_pluseq,
+    /// }
+    sm_rbrace,
+    /// ]
+    sm_rbrack,
+    /// )
+    sm_rparen,
+    /// >>
+    sm_rshift,
+    /// >>=
+    sm_rshifteq,
+    /// ;
+    sm_semicolon,
+    /// /
+    sm_slash,
+    /// /=
+    sm_slasheq,
+    /// *
+    sm_star,
+    /// *=
+    sm_stareq,
+    /// ~
+    sm_tilde,
+    /// ==
+    sm_twoeq,
+    /// //
+    sm_twoslash,
+    /// //=
+    sm_twoslasheq,
+    /// **
+    sm_twostar,
+    /// **=
+    sm_twostareq,
+
+    // whitespace
+    /// \
+    ws_linejoin,
+    /// \n, \r\n or \r
+    ws_newline,
+    /// any sequence of '\n', '\r' or ' '
+    ws_whitespace,
+
+    fn keyword(self: Kind) []const u8 {
+        return switch (self) {
+            .kw_and => "and",
+            .kw_as => "as",
+            .kw_assert => "assert",
+            .kw_async => "async",
+            .kw_await => "await",
+            .kw_break => "break",
+            .kw_class => "class",
+            .kw_continue => "continue",
+            .kw_def => "def",
+            .kw_del => "del",
+            .kw_elif => "elif",
+            .kw_else => "else",
+            .kw_except => "except",
+            .kw_false => "False",
+            .kw_finally => "finally",
+            .kw_for => "for",
+            .kw_from => "from",
+            .kw_global => "global",
+            .kw_if => "if",
+            .kw_import => "import",
+            .kw_in => "in",
+            .kw_is => "is",
+            .kw_lambda => "lambda",
+            .kw_none => "None",
+            .kw_nonlocal => "nonlocal",
+            .kw_not => "not",
+            .kw_or => "or",
+            .kw_pass => "pass",
+            .kw_raise => "raise",
+            .kw_return => "return",
+            .kw_true => "True",
+            .kw_try => "try",
+            .kw_while => "while",
+            .kw_with => "with",
+            .kw_yield => "yield",
+            else => "",
+        };
+    }
+};
+
+/// pretty-print self onto the writer
+pub fn debugFmt(self: Token, source: []const u8, writer: anytype) !void {
+    const text = switch (self.kind) {
+        .ws_newline => "\\n",
+        else => source[self.start .. self.start + self.len],
+    };
+    try writer.print(
+        "Token(kind={s}, text=\"{s}\", start={}, len={})",
+        .{ @tagName(self.kind), text, self.start, self.len },
+    );
 }
 
-pub const Token = struct {
-    start: usize,
-    len: usize,
-    kind: Kind,
-
-    pub const Kind = enum {
-        // keywords
-        kw_and,
-        kw_as,
-        kw_assert,
-        kw_async,
-        kw_await,
-        kw_break,
-        kw_class,
-        kw_continue,
-        kw_def,
-        kw_del,
-        kw_elif,
-        kw_else,
-        kw_except,
-        kw_false,
-        kw_finally,
-        kw_for,
-        kw_from,
-        kw_global,
-        kw_if,
-        kw_import,
-        kw_in,
-        kw_is,
-        kw_lambda,
-        kw_none,
-        kw_nonlocal,
-        kw_not,
-        kw_or,
-        kw_pass,
-        kw_raise,
-        kw_return,
-        kw_true,
-        kw_try,
-        kw_while,
-        kw_with,
-        kw_yield,
-
-        // user-defined
-        /// # a python comment
-        ud_comment,
-        /// an identifier like a variable name, module name or function name
-        ud_identifier,
-        /// any nonsense the user writes that does not match any other token type
-        ud_nonsense,
-
-        // literals
-        /// int literal
-        li_int,
-        /// float literal
-        li_float,
-        /// string literal ("aaa" or u"aaa")
-        li_str,
-        /// format string literal (f"aaa {my_var:.2f}")
-        li_fstr,
-        /// bytes literal (b"aaa")
-        li_bytes,
-
-        // symbols
-        /// &
-        sm_ampersand,
-        /// &=
-        sm_ampersandeq,
-        /// ->
-        sm_arrow,
-        /// @
-        sm_at,
-        /// @=
-        sm_ateq,
-        /// :
-        sm_colon,
-        /// :=
-        sm_coloneq,
-        /// ,
-        sm_comma,
-        /// .
-        sm_dot,
-        /// ...
-        sm_ellipsis,
-        /// =
-        sm_eq,
-        /// !
-        sm_exclamation,
-        /// >
-        sm_gt,
-        /// >=
-        sm_gte,
-        /// ^
-        sm_hat,
-        /// ^=
-        sm_hateq,
-        /// {
-        sm_lbrace,
-        /// [
-        sm_lbrack,
-        /// <
-        sm_lt,
-        /// )
-        sm_lparen,
-        /// <<
-        sm_lshift,
-        /// <<=
-        sm_lshifteq,
-        /// <=
-        sm_lte,
-        /// -
-        sm_minus,
-        /// -=
-        sm_minuseq,
-        /// !=
-        sm_neq,
-        /// %
-        sm_percent,
-        /// %=
-        sm_percenteq,
-        /// |
-        sm_pipe,
-        /// |=
-        sm_pipeeq,
-        /// +
-        sm_plus,
-        /// +=
-        sm_pluseq,
-        /// }
-        sm_rbrace,
-        /// ]
-        sm_rbrack,
-        /// )
-        sm_rparen,
-        /// >>
-        sm_rshift,
-        /// >>=
-        sm_rshifteq,
-        /// ;
-        sm_semicolon,
-        /// /
-        sm_slash,
-        /// /=
-        sm_slasheq,
-        /// *
-        sm_star,
-        /// *=
-        sm_stareq,
-        /// ~
-        sm_tilde,
-        /// ==
-        sm_twoeq,
-        /// //
-        sm_twoslash,
-        /// //=
-        sm_twoslasheq,
-        /// **
-        sm_twostar,
-        /// **=
-        sm_twostareq,
-
-        // whitespace
-        /// \
-        ws_linejoin,
-        /// \n, \r\n or \r
-        ws_newline,
-        /// any sequence of '\n', '\r' or ' '
-        ws_whitespace,
-
-        fn keyword(self: Kind) []const u8 {
-            return switch (self) {
-                .kw_and => "and",
-                .kw_as => "as",
-                .kw_assert => "assert",
-                .kw_async => "async",
-                .kw_await => "await",
-                .kw_break => "break",
-                .kw_class => "class",
-                .kw_continue => "continue",
-                .kw_def => "def",
-                .kw_del => "del",
-                .kw_elif => "elif",
-                .kw_else => "else",
-                .kw_except => "except",
-                .kw_false => "False",
-                .kw_finally => "finally",
-                .kw_for => "for",
-                .kw_from => "from",
-                .kw_global => "global",
-                .kw_if => "if",
-                .kw_import => "import",
-                .kw_in => "in",
-                .kw_is => "is",
-                .kw_lambda => "lambda",
-                .kw_none => "None",
-                .kw_nonlocal => "nonlocal",
-                .kw_not => "not",
-                .kw_or => "or",
-                .kw_pass => "pass",
-                .kw_raise => "raise",
-                .kw_return => "return",
-                .kw_true => "True",
-                .kw_try => "try",
-                .kw_while => "while",
-                .kw_with => "with",
-                .kw_yield => "yield",
-                else => "",
-            };
-        }
-    };
-
-    /// pretty-print self onto the writer
-    pub fn debugFmt(self: Token, source: []const u8, writer: anytype) !void {
-        const text = switch (self.kind) {
-            .ws_newline => "\\n",
-            else => source[self.start .. self.start + self.len],
-        };
-        try writer.print(
-            "Token(kind={s}, text=\"{s}\", start={}, len={})",
-            .{ @tagName(self.kind), text, self.start, self.len },
-        );
-    }
-};
-
 /// Tokenizer for Python code
-pub const Tokenizer = struct {
+pub const Iterator = struct {
     text: []const u8,
     cur: TextCursor,
 
@@ -299,8 +253,8 @@ pub const Tokenizer = struct {
 
     pub const Error = error{Eof};
 
-    pub fn init(text: []const u8) Tokenizer {
-        return Tokenizer{
+    pub fn init(text: []const u8) Iterator {
+        return Iterator{
             .text = text,
             .cur = TextCursor.init(text),
             ._line_begun = false,
@@ -341,7 +295,7 @@ pub const Tokenizer = struct {
 
     /// advance cursor until first occurrence of c or eof
     /// returns true if cursor is at c, false if eof
-    fn _advanceUntil(self: *Tokenizer, c: u8) bool {
+    fn _advanceUntil(self: *Iterator, c: u8) bool {
         while (self._head() != c) {
             self.cur.advance() catch break;
         }
@@ -349,14 +303,14 @@ pub const Tokenizer = struct {
     }
 
     /// advance cursor while the head is equal to c or at eof
-    fn _advanceWhile(self: *Tokenizer, c: u8) void {
+    fn _advanceWhile(self: *Iterator, c: u8) void {
         while (self._head() == c) {
             self.cur.advance() catch break;
         }
     }
 
     /// advance cursor to the first non-whitespace char or eof
-    fn _advanceWhitespace(self: *Tokenizer) void {
+    fn _advanceWhitespace(self: *Iterator) void {
         while (_isWhitespace(self._head())) {
             self.cur.advance() catch break;
         }
@@ -368,7 +322,7 @@ pub const Tokenizer = struct {
     /// robustness purposes so that we can keep tokenizing, but it should be checked
     /// downstream at the parser level once we're casting integer literals to AST
     /// nodes
-    fn _advanceDigitPart(self: *Tokenizer) void {
+    fn _advanceDigitPart(self: *Iterator) void {
         while (std.ascii.isDigit(self._head()) or self._head() == '_') {
             self.cur.advance() catch break;
         }
@@ -378,7 +332,7 @@ pub const Tokenizer = struct {
     /// it where it is.
     ///
     /// Returns a Token.Kind depending on what it did.
-    fn _advanceIfNextEquals(self: *Tokenizer, expect: u8, ok: Token.Kind, fallback: Token.Kind) Token.Kind {
+    fn _advanceIfNextEquals(self: *Iterator, expect: u8, ok: Token.Kind, fallback: Token.Kind) Token.Kind {
         const v = self.cur.curr() catch return fallback;
         if (v == expect) {
             self.cur.advance() catch unreachable;
@@ -391,7 +345,7 @@ pub const Tokenizer = struct {
     /// <, <<, <=, <<=
     /// *, **, *=, **=
     fn _advanceDoubleOperatorAssign(
-        self: *Tokenizer,
+        self: *Iterator,
         op: u8,
         one: Token.Kind,
         two: Token.Kind,
@@ -410,7 +364,7 @@ pub const Tokenizer = struct {
         return self._advanceIfNextEquals('=', twoeq, two);
     }
 
-    inline fn _head(self: *Tokenizer) u8 {
+    inline fn _head(self: *Iterator) u8 {
         assert(!self.cur.eof());
         return self.text[self.cur.pos];
     }
@@ -419,7 +373,7 @@ pub const Tokenizer = struct {
     /// and return the token. This works with multiline strings delimited by """ also
     ///
     /// start should usually be self.cur.pos, but it can be earlier for things like f-strings.
-    fn _advanceStrLiteral(self: *Tokenizer, start: usize, kind: Token.Kind) Error!Token {
+    fn _advanceStrLiteral(self: *Iterator, start: usize, kind: Token.Kind) Error!Token {
         assert(_isStrDelim(self._head()));
 
         const str_delim = self._head();
@@ -468,7 +422,7 @@ pub const Tokenizer = struct {
         return .{ .start = start, .len = self.cur.pos - start, .kind = if (!eof) kind else .ud_nonsense };
     }
 
-    pub fn next(self: *Tokenizer) Error!Token {
+    pub fn next(self: *Iterator) Error!Token {
         // ignore whitespace after the line has begun to avoid spamming since
         // we only need them at the beginning of the line to figure out indentation
         if (self._line_begun) self._advanceWhitespace();
@@ -506,7 +460,7 @@ pub const Tokenizer = struct {
                 else => {},
             };
 
-            return .{ .start = start, .len = id_len, .kind = Tokenizer._identifierToTokenKind(id_text) };
+            return .{ .start = start, .len = id_len, .kind = Iterator._identifierToTokenKind(id_text) };
         }
 
         // string literals with no prefix (f, b or u)
@@ -649,9 +603,9 @@ pub const Tokenizer = struct {
 };
 
 test "_identifierToToken.Kind" {
-    try std.testing.expectEqual(Token.Kind.kw_while, Tokenizer._identifierToTokenKind("while"));
-    try std.testing.expectEqual(Token.Kind.kw_false, Tokenizer._identifierToTokenKind("False"));
-    try std.testing.expectEqual(Token.Kind.ud_identifier, Tokenizer._identifierToTokenKind("myId123"));
+    try std.testing.expectEqual(Token.Kind.kw_while, Iterator._identifierToTokenKind("while"));
+    try std.testing.expectEqual(Token.Kind.kw_false, Iterator._identifierToTokenKind("False"));
+    try std.testing.expectEqual(Token.Kind.ud_identifier, Iterator._identifierToTokenKind("myId123"));
 }
 
 test "compare snapshots" {
@@ -666,7 +620,7 @@ test "compare snapshots" {
         var line_no: u16 = 1;
         var line_start: usize = 0;
 
-        var tok = Tokenizer.init(input);
+        var tok = Iterator.init(input);
 
         var has_nonsense = false;
         while (tok.next()) |token| {

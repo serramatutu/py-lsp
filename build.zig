@@ -26,7 +26,7 @@ pub fn build(b: *std.Build) void {
 
 
     const unit_test= b.addTest(.{
-        .root_source_file = b.path("src/unit_test.zig")
+        .root_source_file = b.path("src/main.zig")
     });
     const unit_test_run_cmd= b.addRunArtifact(unit_test);
     const unit_test_step = b.step("test:unit", "Run unit tests");
